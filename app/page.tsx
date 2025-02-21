@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, KeyboardEvent, ChangeEvent } from "react";
+import { useState, useRef, KeyboardEvent, ChangeEvent, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,14 +20,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Inter } from "next/font/google";
+import { storage, StorageKeys } from "@/lib/localStorage";
+import type { Task } from "@/lib/localStorage";
 
 const inter = Inter({ subsets: ["latin"] });
-
-interface Task {
-  id: number;
-  text: string;
-  done: boolean;
-}
 
 const mentionList = ["Pratham", "Ayush", "Venkat", "Dipto"];
 
@@ -49,6 +45,29 @@ export default function EODUpdatePage() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const taskInputRef = useRef<HTMLInputElement>(null);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+
+  // Load saved data on component mount
+  useEffect(() => {
+    const savedTasks = storage.getItem(StorageKeys.TASKS);
+    if (savedTasks) {
+      setTasks(savedTasks);
+    }
+
+    const savedNotes = storage.getItem(StorageKeys.NOTES);
+    if (savedNotes) {
+      setNotes(savedNotes);
+    }
+  }, []);
+
+  // Save tasks when they change
+  useEffect(() => {
+    storage.setItem(StorageKeys.TASKS, tasks);
+  }, [tasks]);
+
+  // Save notes when they change
+  useEffect(() => {
+    storage.setItem(StorageKeys.NOTES, notes);
+  }, [notes]);
 
   const handleTaskInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -72,7 +91,7 @@ export default function EODUpdatePage() {
     if (!taskInputRef.current) return;
 
     const input = taskInputRef.current;
-    const cursorPosition = input.selectionStart;
+    const cursorPosition = input.selectionStart ?? 0;
     const textBeforeCursor = newTask.slice(0, cursorPosition);
     const textAfterCursor = newTask.slice(cursorPosition);
     const lastAtSymbolIndex = textBeforeCursor.lastIndexOf("@");
@@ -149,19 +168,23 @@ export default function EODUpdatePage() {
   };
 
   const updateCursorPosition = (textarea: HTMLTextAreaElement) => {
-    const cursorIndex = textarea.selectionStart;
-    const textBeforeCursor = textarea.value.substring(0, cursorIndex);
+    const cursorIndex = textarea.selectionStart ?? 0;
+    const value = textarea.value ?? "";
+    const textBeforeCursor = value.substring(0, cursorIndex);
     const lines = textBeforeCursor.split("\n");
     const currentLineIndex = lines.length - 1;
     const currentLineText = lines[currentLineIndex];
 
-    const lineHeight = parseInt(window.getComputedStyle(textarea).lineHeight);
-    const paddingTop = parseInt(window.getComputedStyle(textarea).paddingTop);
-    const paddingLeft = parseInt(window.getComputedStyle(textarea).paddingLeft);
+    const style = window.getComputedStyle(textarea);
+    const lineHeight = parseInt(style.lineHeight) || 20; // Default to 20px
+    const paddingTop = parseInt(style.paddingTop) || 0;
+    const paddingLeft = parseInt(style.paddingLeft) || 0;
 
-    const x =
-      (currentLineText.length % parseInt(textarea.cols.toString())) * 8 +
-      paddingLeft;
+    // Calculate position with fallback values
+    const x = Math.min(
+      currentLineText.length * 8 + paddingLeft,
+      textarea.clientWidth - 200 // Ensure popup doesn't go off-screen
+    );
     const y = currentLineIndex * lineHeight + paddingTop;
 
     setCursorPosition({ x, y });
@@ -171,7 +194,7 @@ export default function EODUpdatePage() {
     if (!textareaRef.current) return;
 
     const textarea = textareaRef.current;
-    const cursorPosition = textarea.selectionStart;
+    const cursorPosition = textarea.selectionStart ?? 0;
     const textBeforeCursor = notes.slice(0, cursorPosition);
     const textAfterCursor = notes.slice(cursorPosition);
     const lastAtSymbolIndex = textBeforeCursor.lastIndexOf("@");
@@ -358,7 +381,7 @@ export default function EODUpdatePage() {
                       position: "absolute",
                       left: `${cursorPosition.x}px`,
                       top: `${cursorPosition.y + 24}px`,
-                        width: "200px"
+                      width: "200px",
                     }}
                     className="bg-zinc-800 backdrop-blur-sm rounded-lg shadow-xl border border-white/10 overflow-hidden z-10"
                   >

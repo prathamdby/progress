@@ -1,11 +1,19 @@
 "use client";
 
-import { useState, useRef, KeyboardEvent, ChangeEvent, useEffect } from "react";
+import {
+  useState,
+  useRef,
+  KeyboardEvent,
+  ChangeEvent,
+  useEffect,
+  useCallback,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ConfettiEffect } from "@/components/ui/confetti";
 import {
   Send,
   Plus,
@@ -43,7 +51,29 @@ const GridPattern = () => (
   <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:50px_50px] [mask-image:radial-gradient(white,transparent_85%)] pointer-events-none" />
 );
 
+// Confetti trigger states type
+interface ConfettiTriggers {
+  taskAdded: boolean;
+  taskCompleted: boolean;
+  taskDeleted: boolean;
+  allTasksCleared: boolean;
+  notesSaved: boolean;
+  notesDeleted: boolean;
+  updateGenerated: boolean;
+  updateCopied: boolean;
+}
+
 export default function EODUpdatePage() {
+  const [confettiTriggers, setConfettiTriggers] = useState<ConfettiTriggers>({
+    taskAdded: false,
+    taskCompleted: false,
+    taskDeleted: false,
+    allTasksCleared: false,
+    notesSaved: false,
+    notesDeleted: false,
+    updateGenerated: false,
+    updateCopied: false,
+  });
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState("");
   const [notes, setNotes] = useState("");
@@ -58,7 +88,6 @@ export default function EODUpdatePage() {
   const taskInputRef = useRef<HTMLInputElement>(null);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
 
-  // Load saved data on component mount
   useEffect(() => {
     const savedTasks = storage.getItem(StorageKeys.TASKS);
     if (savedTasks) {
@@ -71,15 +100,20 @@ export default function EODUpdatePage() {
     }
   }, []);
 
-  // Save tasks when they change
   useEffect(() => {
     storage.setItem(StorageKeys.TASKS, tasks);
   }, [tasks]);
 
-  // Save notes when they change
   useEffect(() => {
     storage.setItem(StorageKeys.NOTES, notes);
   }, [notes]);
+
+  const triggerConfetti = useCallback((type: keyof ConfettiTriggers) => {
+    setConfettiTriggers((prev) => ({ ...prev, [type]: true }));
+    setTimeout(() => {
+      setConfettiTriggers((prev) => ({ ...prev, [type]: false }));
+    }, 2000);
+  }, []);
 
   const handleTaskInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -91,8 +125,8 @@ export default function EODUpdatePage() {
       setTaskMentionQuery(query);
       setTaskMentionSuggestions(
         mentionList.filter((name) =>
-          name.toLowerCase().startsWith(query.toLowerCase())
-        )
+          name.toLowerCase().startsWith(query.toLowerCase()),
+        ),
       );
     } else {
       setTaskMentionSuggestions([]);
@@ -117,7 +151,7 @@ export default function EODUpdatePage() {
     const newCursorPosition = lastAtSymbolIndex + name.length + 2;
     setTimeout(
       () => input.setSelectionRange(newCursorPosition, newCursorPosition),
-      0
+      0,
     );
   };
 
@@ -125,19 +159,40 @@ export default function EODUpdatePage() {
     if (newTask.trim()) {
       setTasks([...tasks, { id: Date.now(), text: newTask, done: false }]);
       setNewTask("");
+      triggerConfetti("taskAdded");
     }
   };
 
   const removeTask = (id: number) => {
     setTasks(tasks.filter((task) => task.id !== id));
+    triggerConfetti("taskDeleted");
   };
 
   const toggleTask = (id: number) => {
     setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, done: !task.done } : task
-      )
+      tasks.map((task) => {
+        if (task.id === id) {
+          const newDone = !task.done;
+          if (newDone) {
+            triggerConfetti("taskCompleted");
+          }
+          return { ...task, done: newDone };
+        }
+        return task;
+      }),
     );
+  };
+
+  const clearAllData = () => {
+    setTasks([]);
+    setNotes("");
+    setAiUpdate("");
+    storage.removeItem(StorageKeys.TASKS);
+    storage.removeItem(StorageKeys.NOTES);
+    triggerConfetti("allTasksCleared");
+    if (notes.trim()) {
+      triggerConfetti("notesDeleted");
+    }
   };
 
   const generateUpdate = () => {
@@ -152,17 +207,33 @@ export default function EODUpdatePage() {
     setAiUpdate(`Today's accomplishments: ${completedTasks}. 
     Notes: ${notes}. 
     Pending tasks for tomorrow: ${pendingTasks}.`);
+    triggerConfetti("updateGenerated");
   };
 
   const copyToClipboard = async () => {
     if (aiUpdate) {
       await navigator.clipboard.writeText(aiUpdate);
+      triggerConfetti("updateCopied");
     }
   };
+
+  const debounce = (func: Function, wait: number) => {
+    let timeout: NodeJS.Timeout;
+    return (...args: any[]) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), wait);
+    };
+  };
+
+  const handleNotesSaved = debounce(() => {
+    triggerConfetti("notesSaved");
+  }, 1000);
 
   const handleNotesChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setNotes(value);
+    handleNotesSaved();
+
     const words = value.split(" ");
     const lastWord = words[words.length - 1];
     if (lastWord.startsWith("@")) {
@@ -170,8 +241,8 @@ export default function EODUpdatePage() {
       setMentionQuery(query);
       setMentionSuggestions(
         mentionList.filter((name) =>
-          name.toLowerCase().startsWith(query.toLowerCase())
-        )
+          name.toLowerCase().startsWith(query.toLowerCase()),
+        ),
       );
     } else {
       setMentionSuggestions([]);
@@ -188,14 +259,13 @@ export default function EODUpdatePage() {
     const currentLineText = lines[currentLineIndex];
 
     const style = window.getComputedStyle(textarea);
-    const lineHeight = parseInt(style.lineHeight) || 20; // Default to 20px
+    const lineHeight = parseInt(style.lineHeight) || 20;
     const paddingTop = parseInt(style.paddingTop) || 0;
     const paddingLeft = parseInt(style.paddingLeft) || 0;
 
-    // Calculate position with fallback values
     const x = Math.min(
       currentLineText.length * 8 + paddingLeft,
-      textarea.clientWidth - 200 // Ensure popup doesn't go off-screen
+      textarea.clientWidth - 200,
     );
     const y = currentLineIndex * lineHeight + paddingTop;
 
@@ -220,12 +290,16 @@ export default function EODUpdatePage() {
     const newCursorPosition = lastAtSymbolIndex + name.length + 2;
     setTimeout(
       () => textarea.setSelectionRange(newCursorPosition, newCursorPosition),
-      0
+      0,
     );
   };
 
   return (
     <main className={`min-h-screen pt-12 pb-16 relative ${inter.className}`}>
+      {Object.entries(confettiTriggers).map(
+        ([key, value]) => value && <ConfettiEffect key={key} />,
+      )}
+
       <GridPattern />
       <div className="relative z-10 max-w-7xl mx-auto px-8">
         <div className="flex items-center justify-center gap-3 mb-16">
@@ -301,13 +375,7 @@ export default function EODUpdatePage() {
                 >
                   <Plus className="h-4 w-4" />
                 </Button>
-                <Dialog
-                  onOpenChange={(open) => {
-                    if (!open) {
-                      // Reset any state if needed when dialog closes
-                    }
-                  }}
-                >
+                <Dialog>
                   <DialogTrigger asChild>
                     <Button
                       size="icon"
@@ -338,13 +406,7 @@ export default function EODUpdatePage() {
                       </DialogClose>
                       <DialogClose asChild>
                         <Button
-                          onClick={() => {
-                            setTasks([]);
-                            setNotes("");
-                            setAiUpdate("");
-                            storage.removeItem(StorageKeys.TASKS);
-                            storage.removeItem(StorageKeys.NOTES);
-                          }}
+                          onClick={clearAllData}
                           className="w-full sm:w-auto bg-red-500/20 hover:bg-red-500/30 text-red-500"
                         >
                           Clear All

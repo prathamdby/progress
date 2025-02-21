@@ -125,8 +125,8 @@ export default function EODUpdatePage() {
       setTaskMentionQuery(query);
       setTaskMentionSuggestions(
         mentionList.filter((name) =>
-          name.toLowerCase().startsWith(query.toLowerCase()),
-        ),
+          name.toLowerCase().startsWith(query.toLowerCase())
+        )
       );
     } else {
       setTaskMentionSuggestions([]);
@@ -151,7 +151,7 @@ export default function EODUpdatePage() {
     const newCursorPosition = lastAtSymbolIndex + name.length + 2;
     setTimeout(
       () => input.setSelectionRange(newCursorPosition, newCursorPosition),
-      0,
+      0
     );
   };
 
@@ -179,7 +179,7 @@ export default function EODUpdatePage() {
           return { ...task, done: newDone };
         }
         return task;
-      }),
+      })
     );
   };
 
@@ -241,8 +241,8 @@ export default function EODUpdatePage() {
       setMentionQuery(query);
       setMentionSuggestions(
         mentionList.filter((name) =>
-          name.toLowerCase().startsWith(query.toLowerCase()),
-        ),
+          name.toLowerCase().startsWith(query.toLowerCase())
+        )
       );
     } else {
       setMentionSuggestions([]);
@@ -265,7 +265,7 @@ export default function EODUpdatePage() {
 
     const x = Math.min(
       currentLineText.length * 8 + paddingLeft,
-      textarea.clientWidth - 200,
+      textarea.clientWidth - 200
     );
     const y = currentLineIndex * lineHeight + paddingTop;
 
@@ -290,19 +290,21 @@ export default function EODUpdatePage() {
     const newCursorPosition = lastAtSymbolIndex + name.length + 2;
     setTimeout(
       () => textarea.setSelectionRange(newCursorPosition, newCursorPosition),
-      0,
+      0
     );
   };
 
   return (
-    <main className={`min-h-screen pt-12 pb-16 relative ${inter.className}`}>
+    <main
+      className={`min-h-screen pt-8 sm:pt-12 pb-16 relative ${inter.className}`}
+    >
       {Object.entries(confettiTriggers).map(
-        ([key, value]) => value && <ConfettiEffect key={key} />,
+        ([key, value]) => value && <ConfettiEffect key={key} />
       )}
 
       <GridPattern />
       <div className="relative z-10 max-w-7xl mx-auto px-8">
-        <div className="flex items-center justify-center gap-3 mb-16">
+        <div className="flex items-center justify-center gap-3 mb-10 sm:mb-16">
           <Activity className="h-8 w-8 text-white/90" />
           <span className="text-xl font-semibold text-gradient">Progress</span>
         </div>
@@ -312,10 +314,10 @@ export default function EODUpdatePage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <h1 className="text-[72px] font-black tracking-tight mb-4 text-gradient">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-black tracking-tight mb-2 lg:mb-4 leading-tight lg:leading-[1.15] text-gradient">
             What did you get done today?
           </h1>
-          <p className="text-xl font-medium text-gradient">
+          <p className="text-lg sm:text-xl font-medium text-gradient max-w-2xl mx-auto">
             Track your accomplishments and share updates with your team
           </p>
         </motion.div>

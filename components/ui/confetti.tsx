@@ -7,7 +7,7 @@ interface ConfettiEffectProps {
   duration?: number; // Duration in milliseconds
 }
 
-export function ConfettiEffect({ duration = 2000 }: ConfettiEffectProps) {
+export function ConfettiEffect({ duration = 4000 }: ConfettiEffectProps) {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [isActive, setIsActive] = useState(true);
 

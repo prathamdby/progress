@@ -437,21 +437,21 @@ export default function EODUpdatePage() {
           </p>
           <div className="flex items-center gap-4">
             <Link
-              href="https://github.com/prathamdubey"
+              href="https://github.com/prathamdby"
               target="_blank"
               className="text-white/40 hover:text-white transition-colors"
             >
               <Github className="h-5 w-5" />
             </Link>
             <Link
-              href="https://twitter.com/prathamdubey"
+              href="https://twitter.com/prathamdby"
               target="_blank"
               className="text-white/40 hover:text-white transition-colors"
             >
               <Twitter className="h-5 w-5" />
             </Link>
             <Link
-              href="https://linkedin.com/in/prathamdubey"
+              href="https://linkedin.com/in/prathamdby"
               target="_blank"
               className="text-white/40 hover:text-white transition-colors"
             >

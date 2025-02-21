@@ -17,7 +17,19 @@ import {
   Linkedin,
   ListTodo,
   ScrollText,
+  Trash2,
+  AlertTriangle,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
 import Link from "next/link";
 import { Inter } from "next/font/google";
 import { storage, StorageKeys } from "@/lib/localStorage";
@@ -281,13 +293,67 @@ export default function EODUpdatePage() {
                   )}
                 </AnimatePresence>
               </div>
-              <Button
-                onClick={addTask}
-                className="bg-white/10 hover:bg-white/20 text-white transition-colors"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Add
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  onClick={addTask}
+                  size="icon"
+                  className="bg-white/10 hover:bg-white/20 text-white transition-colors"
+                >
+                  <Plus className="h-4 w-4" />
+                </Button>
+                <Dialog
+                  onOpenChange={(open) => {
+                    if (!open) {
+                      // Reset any state if needed when dialog closes
+                    }
+                  }}
+                >
+                  <DialogTrigger asChild>
+                    <Button
+                      size="icon"
+                      className="bg-red-500/20 hover:bg-red-500/30 text-red-500 transition-colors"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle className="flex items-center gap-2">
+                        <AlertTriangle className="h-5 w-5 text-red-500" />
+                        <span>Clear All Data</span>
+                      </DialogTitle>
+                      <DialogDescription className="pt-3">
+                        Are you sure you want to clear all tasks and notes? This
+                        action cannot be undone.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter className="mt-6">
+                      <DialogClose asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full sm:w-auto border-white/10 bg-white/5 hover:bg-white/10"
+                        >
+                          Cancel
+                        </Button>
+                      </DialogClose>
+                      <DialogClose asChild>
+                        <Button
+                          onClick={() => {
+                            setTasks([]);
+                            setNotes("");
+                            setAiUpdate("");
+                            storage.removeItem(StorageKeys.TASKS);
+                            storage.removeItem(StorageKeys.NOTES);
+                          }}
+                          className="w-full sm:w-auto bg-red-500/20 hover:bg-red-500/30 text-red-500"
+                        >
+                          Clear All
+                        </Button>
+                      </DialogClose>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </div>
 
             <div className="space-y-2 max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
@@ -430,7 +496,7 @@ export default function EODUpdatePage() {
         </div>
       </div>
 
-      <div className="mt-16 text-center">
+      <div className="mt-4 text-center">
         <div className="flex flex-col items-center gap-3">
           <p className="text-sm font-medium text-white/60">
             Made with ♥️ by Pratham

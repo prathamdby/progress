@@ -64,7 +64,7 @@
   h4,
   h5,
   h6 {
-    @apply tracking-tight font-semibold;
+    @apply font-semibold tracking-tight;
   }
 
   h1 {
@@ -90,7 +90,7 @@
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  @apply bg-white/10 rounded-full;
+  @apply rounded-full bg-white/10;
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
@@ -99,7 +99,7 @@
 
 /* Glass Effect */
 .glass {
-  @apply bg-black/20 backdrop-blur-lg border border-white/[0.08];
+  @apply border border-white/[0.08] bg-black/20 backdrop-blur-lg;
 }
 
 .glass-hover {
@@ -136,7 +136,7 @@
 
 /* Section Title with Icon */
 .section-title {
-  @apply flex items-center gap-3 mb-6;
+  @apply mb-6 flex items-center gap-3;
 }
 
 .section-title-icon {
@@ -144,7 +144,7 @@
 }
 
 .section-title-text {
-  @apply text-xl font-semibold text-gradient-title;
+  @apply text-gradient-title text-xl font-semibold;
 }
 
 /* Focus Styles */
@@ -154,9 +154,9 @@
 
 /* Input and Button Styles */
 .input-subtle {
-  @apply bg-white/5 border-white/10 focus:border-white/20;
+  @apply border-white/10 bg-white/5 focus:border-white/20;
 }
 
 .button-subtle {
-  @apply bg-white/10 hover:bg-white/20 text-white transition-colors duration-200;
+  @apply bg-white/10 text-white transition-colors duration-200 hover:bg-white/20;
 }

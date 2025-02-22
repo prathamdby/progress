@@ -51,8 +51,8 @@ const NotesSection = ({
       setMentionQuery(query);
       setMentionSuggestions(
         mentionList.filter((name) =>
-          name.toLowerCase().startsWith(query.toLowerCase()),
-        ),
+          name.toLowerCase().startsWith(query.toLowerCase())
+        )
       );
     } else {
       setMentionSuggestions([]);
@@ -75,7 +75,7 @@ const NotesSection = ({
 
     const x = Math.min(
       currentLineText.length * 8 + paddingLeft,
-      textarea.clientWidth - 200,
+      textarea.clientWidth - 200
     );
     const y = currentLineIndex * lineHeight + paddingTop;
 
@@ -100,7 +100,7 @@ const NotesSection = ({
     const newCursorPosition = lastAtSymbolIndex + name.length + 2;
     setTimeout(
       () => textarea.setSelectionRange(newCursorPosition, newCursorPosition),
-      0,
+      0
     );
   };
 
@@ -119,14 +119,14 @@ const NotesSection = ({
     >
       <div className="flex items-center gap-3">
         <ScrollText className="h-5 w-5 text-white" />
-        <h2 className="text-xl font-semibold text-gradient">Notes & Updates</h2>
+        <h2 className="text-gradient text-xl font-semibold">Notes & Updates</h2>
       </div>
 
       <div className="relative">
         <Textarea
           ref={textareaRef}
           placeholder="Write your notes here... Use @ to mention team members"
-          className="min-h-[400px] bg-white/5 border-white/10 focus:border-white/20 resize-none text-[15px] font-medium text-white/90"
+          className="min-h-[400px] resize-none border-white/10 bg-white/5 text-[15px] font-medium text-white/90 focus:border-white/20"
           value={notes}
           onChange={handleNotesChange}
         />
@@ -142,12 +142,12 @@ const NotesSection = ({
                 top: `${cursorPosition.y + 24}px`,
                 width: "200px",
               }}
-              className="bg-zinc-800 backdrop-blur-sm rounded-lg shadow-xl border border-white/10 overflow-hidden z-10"
+              className="z-10 overflow-hidden rounded-lg border border-white/10 bg-zinc-800 shadow-xl backdrop-blur-sm"
             >
               {mentionSuggestions.map((name) => (
                 <button
                   key={name}
-                  className="block w-full text-left px-4 py-3 text-sm font-medium hover:bg-white/5 transition-colors text-white/90"
+                  className="block w-full px-4 py-3 text-left text-sm font-medium text-white/90 transition-colors hover:bg-white/5"
                   onClick={() => insertMention(name)}
                 >
                   @{name}
@@ -164,13 +164,13 @@ const NotesSection = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className="relative bg-white/5 border border-white/10 rounded-lg p-4"
+            className="relative rounded-lg border border-white/10 bg-white/5 p-4"
           >
-            <h3 className="text-sm font-medium text-white/80 mb-2">
+            <h3 className="mb-2 text-sm font-medium text-white/80">
               Generated Update
             </h3>
             <div className="pr-12">
-              <p className="text-[15px] leading-relaxed whitespace-pre-line text-white/90 font-medium">
+              <p className="whitespace-pre-line text-[15px] font-medium leading-relaxed text-white/90">
                 {aiUpdate}
               </p>
             </div>
@@ -178,7 +178,7 @@ const NotesSection = ({
               onClick={copyToClipboard}
               size="icon"
               variant="ghost"
-              className="absolute top-3 right-3 hover:bg-white/10"
+              className="absolute right-3 top-3 hover:bg-white/10"
             >
               <Copy className="h-4 w-4" />
             </Button>

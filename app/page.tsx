@@ -86,10 +86,10 @@ export default function EODUpdatePage() {
   };
 
   return (
-    <main className={`min-h-screen pt-8 sm:pt-12 relative ${inter.className}`}>
+    <main className={`relative min-h-screen pt-8 sm:pt-12 ${inter.className}`}>
       {/* Confetti Effects */}
       {Object.entries(confettiTriggers).map(
-        ([key, value]) => value && <ConfettiEffect key={key} />,
+        ([key, value]) => value && <ConfettiEffect key={key} />
       )}
 
       {/* GIF Popup */}
@@ -103,10 +103,10 @@ export default function EODUpdatePage() {
 
       <GridPattern />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-8">
+      <div className="relative z-10 mx-auto max-w-7xl px-8">
         <Header />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
           {/* Tasks Section */}
           <TaskSection
             tasks={tasks}

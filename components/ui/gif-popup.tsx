@@ -45,7 +45,7 @@ export const GifPopup = ({ isVisible, onClose, searchTerm }: GifPopupProps) => {
                 "Cache-Control": "no-cache, no-store, must-revalidate",
                 Pragma: "no-cache",
               },
-            },
+            }
           );
 
           if (!response.ok) {
@@ -111,7 +111,7 @@ export const GifPopup = ({ isVisible, onClose, searchTerm }: GifPopupProps) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 pointer-events-none z-[9998]"
+            className="pointer-events-none fixed inset-0 z-[9998] bg-black/50"
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.8, x: 0, y: 0 }}
@@ -132,13 +132,13 @@ export const GifPopup = ({ isVisible, onClose, searchTerm }: GifPopupProps) => {
               damping: 20,
               stiffness: 300,
             }}
-            className="fixed top-0 left-0 z-[9999] pointer-events-none"
+            className="pointer-events-none fixed left-0 top-0 z-[9999]"
           >
-            <div className="relative rounded-lg overflow-hidden shadow-2xl w-[300px] h-[300px] bg-white">
+            <div className="relative h-[300px] w-[300px] overflow-hidden rounded-lg bg-white shadow-2xl">
               <Image
                 src={state.gif}
                 alt={`Random ${searchTerm} gif`}
-                className="w-full h-full object-contain"
+                className="h-full w-full object-contain"
                 width={300}
                 height={300}
                 unoptimized

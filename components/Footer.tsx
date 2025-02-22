@@ -3,7 +3,7 @@ import { Github, Twitter, Linkedin } from "lucide-react";
 
 const Footer = () => {
   return (
-    <div className="mt-16 sm:mt-24 py-8 text-center border-t border-white/5 bg-white/[0.02]">
+    <div className="mt-16 border-t border-white/5 bg-white/[0.02] py-8 text-center sm:mt-24">
       <div className="flex flex-col items-center gap-4">
         <p className="text-sm font-medium text-white/60">
           Made with ♥️ by Pratham
@@ -12,21 +12,21 @@ const Footer = () => {
           <Link
             href="https://github.com/prathamdby"
             target="_blank"
-            className="text-white/40 hover:text-white transition-colors"
+            className="text-white/40 transition-colors hover:text-white"
           >
             <Github className="h-5 w-5" />
           </Link>
           <Link
             href="https://twitter.com/prathamdby"
             target="_blank"
-            className="text-white/40 hover:text-white transition-colors"
+            className="text-white/40 transition-colors hover:text-white"
           >
             <Twitter className="h-5 w-5" />
           </Link>
           <Link
             href="https://linkedin.com/in/prathamdby"
             target="_blank"
-            className="text-white/40 hover:text-white transition-colors"
+            className="text-white/40 transition-colors hover:text-white"
           >
             <Linkedin className="h-5 w-5" />
           </Link>

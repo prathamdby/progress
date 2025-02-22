@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${roboto.variable} font-sans antialiased min-h-screen bg-gradient-to-b from-black via-blue-950/80 to-black text-white`}
+        className={`${roboto.variable} min-h-screen bg-gradient-to-b from-black via-blue-950/80 to-black font-sans text-white antialiased`}
       >
         {children}
       </body>

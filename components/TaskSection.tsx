@@ -63,8 +63,8 @@ const TaskSection = ({
       setTaskMentionQuery(query);
       setTaskMentionSuggestions(
         mentionList.filter((name) =>
-          name.toLowerCase().startsWith(query.toLowerCase()),
-        ),
+          name.toLowerCase().startsWith(query.toLowerCase())
+        )
       );
     } else {
       setTaskMentionSuggestions([]);
@@ -89,7 +89,7 @@ const TaskSection = ({
     const newCursorPosition = lastAtSymbolIndex + name.length + 2;
     setTimeout(
       () => input.setSelectionRange(newCursorPosition, newCursorPosition),
-      0,
+      0
     );
   };
 
@@ -117,7 +117,7 @@ const TaskSection = ({
           return { ...task, done: newDone };
         }
         return task;
-      }),
+      })
     );
   };
 
@@ -136,16 +136,16 @@ const TaskSection = ({
     >
       <div className="flex items-center gap-3">
         <ListTodo className="h-5 w-5 text-white" />
-        <h2 className="text-xl font-semibold text-gradient">Today's Tasks</h2>
+        <h2 className="text-gradient text-xl font-semibold">Today's Tasks</h2>
       </div>
 
       <div className="flex gap-2">
-        <div className="flex-1 relative">
+        <div className="relative flex-1">
           <Input
             ref={taskInputRef}
             type="text"
             placeholder="Add a new task... Use @ to mention team members"
-            className="w-full bg-white/5 border-white/10 focus:border-white/20"
+            className="w-full border-white/10 bg-white/5 focus:border-white/20"
             value={newTask}
             onChange={handleTaskInputChange}
             onKeyPress={(e: KeyboardEvent<HTMLInputElement>) =>
@@ -158,12 +158,12 @@ const TaskSection = ({
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="absolute w-[200px] top-[calc(100%+4px)] bg-zinc-800 backdrop-blur-sm rounded-lg shadow-xl border border-white/10 overflow-hidden z-10"
+                className="absolute top-[calc(100%+4px)] z-10 w-[200px] overflow-hidden rounded-lg border border-white/10 bg-zinc-800 shadow-xl backdrop-blur-sm"
               >
                 {taskMentionSuggestions.map((name) => (
                   <button
                     key={name}
-                    className="block w-full text-left px-4 py-3 text-sm font-medium hover:bg-white/5 transition-colors text-white/90"
+                    className="block w-full px-4 py-3 text-left text-sm font-medium text-white/90 transition-colors hover:bg-white/5"
                     onClick={() => insertTaskMention(name)}
                   >
                     @{name}
@@ -177,7 +177,7 @@ const TaskSection = ({
           <Button
             onClick={addTask}
             size="icon"
-            className="bg-white/10 hover:bg-white/20 text-white transition-colors"
+            className="bg-white/10 text-white transition-colors hover:bg-white/20"
           >
             <Plus className="h-4 w-4" />
           </Button>
@@ -185,7 +185,7 @@ const TaskSection = ({
             <DialogTrigger asChild>
               <Button
                 size="icon"
-                className="bg-red-500/20 hover:bg-red-500/30 text-red-500 transition-colors"
+                className="bg-red-500/20 text-red-500 transition-colors hover:bg-red-500/30"
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -205,7 +205,7 @@ const TaskSection = ({
                 <DialogClose asChild>
                   <Button
                     variant="outline"
-                    className="w-full sm:w-auto border-white/10 bg-white/5 hover:bg-white/10"
+                    className="w-full border-white/10 bg-white/5 hover:bg-white/10 sm:w-auto"
                   >
                     Cancel
                   </Button>
@@ -213,7 +213,7 @@ const TaskSection = ({
                 <DialogClose asChild>
                   <Button
                     onClick={clearAllData}
-                    className="w-full sm:w-auto bg-red-500/20 hover:bg-red-500/30 text-red-500"
+                    className="w-full bg-red-500/20 text-red-500 hover:bg-red-500/30 sm:w-auto"
                   >
                     Clear All
                   </Button>
@@ -224,16 +224,16 @@ const TaskSection = ({
         </div>
       </div>
 
-      <div className="space-y-2 max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+      <div className="scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent max-h-[400px] space-y-2 overflow-y-auto">
         <AnimatePresence initial={false}>
           {tasks.length === 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex flex-col items-center justify-center py-12 border rounded-md bg-white/5 border-white/10 text-center"
+              className="flex flex-col items-center justify-center rounded-md border border-white/10 bg-white/5 py-12 text-center"
             >
-              <ListTodo className="h-8 w-8 text-white/40 mb-3" />
-              <p className="text-white/60 text-sm font-medium">
+              <ListTodo className="mb-3 h-8 w-8 text-white/40" />
+              <p className="text-sm font-medium text-white/60">
                 Start by creating a task
               </p>
             </motion.div>
@@ -245,17 +245,17 @@ const TaskSection = ({
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="group flex items-center justify-between bg-white/5 border border-white/10 rounded-md p-4 hover:bg-white/[0.07] transition-colors pr-14 relative"
+              className="group relative flex items-center justify-between rounded-md border border-white/10 bg-white/5 p-4 pr-14 transition-colors hover:bg-white/[0.07]"
             >
-              <div className="flex items-center gap-3 flex-1 min-w-0">
+              <div className="flex min-w-0 flex-1 items-center gap-3">
                 <Checkbox
                   checked={task.done}
                   onCheckedChange={() => toggleTask(task.id)}
                   className="border-white/20"
                 />
                 <span
-                  className={`text-[15px] font-medium transition-all duration-200 truncate ${
-                    task.done ? "line-through text-white/40" : "text-white/90"
+                  className={`truncate text-[15px] font-medium transition-all duration-200 ${
+                    task.done ? "text-white/40 line-through" : "text-white/90"
                   }`}
                 >
                   {task.text}
@@ -265,7 +265,7 @@ const TaskSection = ({
                 variant="ghost"
                 size="icon"
                 onClick={() => removeTask(task.id)}
-                className="opacity-100 md:opacity-0 group-hover:opacity-100 hover:bg-white/10 absolute right-2"
+                className="absolute right-2 opacity-100 hover:bg-white/10 group-hover:opacity-100 md:opacity-0"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -277,7 +277,7 @@ const TaskSection = ({
       <Button
         onClick={onGenerateUpdate}
         disabled={isGifPlaying}
-        className="w-full bg-white/10 hover:bg-white/20 text-white h-12 transition-colors"
+        className="h-12 w-full bg-white/10 text-white transition-colors hover:bg-white/20"
       >
         <div className="flex items-center justify-center">
           <AnimatePresence mode="wait" initial={false}>
@@ -293,17 +293,17 @@ const TaskSection = ({
             >
               {isGifPlaying ? (
                 <>
-                  <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                   <span>Playing GIF...</span>
                 </>
               ) : isGenerating ? (
                 <>
-                  <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                   <span>Generating...</span>
                 </>
               ) : (
                 <>
-                  <Send className="h-5 w-5 mr-2" />
+                  <Send className="mr-2 h-5 w-5" />
                   <span>Generate Update</span>
                 </>
               )}

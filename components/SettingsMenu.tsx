@@ -49,7 +49,7 @@ export function SettingsMenu({ onTeamMembersChange }: SettingsMenuProps) {
         <Button
           variant="outline"
           size="icon"
-          className="fixed right-4 top-4 z-50 rounded-full border-white/10 bg-white/10 hover:bg-white/20"
+          className="fixed right-4 top-4 z-50 items-center border-white/10 bg-white/10 hover:bg-white/20"
         >
           <Settings className="h-[1.2rem] w-[1.2rem] text-white" />
         </Button>

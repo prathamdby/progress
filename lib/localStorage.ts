@@ -35,8 +35,8 @@ class StorageUtility {
   private isLocalStorageAvailable: boolean;
 
   private constructor() {
-    this.isLocalStorageAvailable =
-      typeof window !== "undefined" && window.localStorage;
+    this.isLocalStorageAvailable = 
+      typeof window !== "undefined" && !!window.localStorage;
   }
 
   public static getInstance(): StorageUtility {

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Inter } from "next/font/google";
 import GridPattern from "@/components/GridPattern";
 import Header from "@/components/Header";
+import { SettingsMenu } from "@/components/SettingsMenu";
 import TaskSection from "@/components/TaskSection";
 import NotesSection from "@/components/NotesSection";
 import Footer from "@/components/Footer";
@@ -15,9 +16,25 @@ import type { Task } from "@/types";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const mentionList = ["Pratham", "Ayush", "Venkat", "Dipto"];
-
 export default function EODUpdatePage() {
+  const [mentionList, setMentionList] = useState<string[]>(
+    () =>
+      storage
+        .getItem(StorageKeys.TEAM_MEMBERS)
+        ?.map((member) => member.username) || []
+  );
+
+  const updateMentionList = useCallback(() => {
+    const members = storage.getItem(StorageKeys.TEAM_MEMBERS);
+    setMentionList(members?.map((member) => member.username) || []);
+  }, []);
+
+  // Handle storage changes from other windows/tabs
+  useEffect(() => {
+    window.addEventListener("storage", updateMentionList);
+    return () => window.removeEventListener("storage", updateMentionList);
+  }, [updateMentionList]);
+
   const { confettiTriggers, triggerConfetti } = useConfettiTrigger();
   const [isGenerating, setIsGenerating] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -104,7 +121,7 @@ export default function EODUpdatePage() {
       <GridPattern />
 
       <div className="relative z-10 mx-auto max-w-7xl px-8">
-        <Header />
+        <Header onTeamMembersChange={updateMentionList} />
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
           {/* Tasks Section */}
@@ -115,6 +132,7 @@ export default function EODUpdatePage() {
             onGenerateUpdate={generateUpdate}
             isGenerating={isGenerating}
             isGifPlaying={gifPopup.show}
+            mentionList={mentionList}
           />
 
           {/* Notes Section */}

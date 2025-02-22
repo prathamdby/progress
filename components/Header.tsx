@@ -2,10 +2,16 @@
 
 import { Activity } from "lucide-react";
 import { motion } from "framer-motion";
+import { SettingsMenu } from "./SettingsMenu";
 
-const Header = () => {
+export interface HeaderProps {
+  onTeamMembersChange: () => void;
+}
+
+export const Header = ({ onTeamMembersChange }: HeaderProps) => {
   return (
     <>
+      <SettingsMenu onTeamMembersChange={onTeamMembersChange} />
       <div className="mb-10 flex items-center justify-center gap-3 sm:mb-16">
         <Activity className="h-8 w-8 text-white/90" />
         <span className="text-gradient text-xl font-semibold">Progress</span>

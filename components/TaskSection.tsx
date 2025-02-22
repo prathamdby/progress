@@ -34,9 +34,8 @@ interface TaskSectionProps {
   onGenerateUpdate: () => void;
   isGenerating: boolean;
   isGifPlaying: boolean;
+  mentionList: string[];
 }
-
-const mentionList = ["Pratham", "Ayush", "Venkat", "Dipto"];
 
 const TaskSection = ({
   tasks,
@@ -45,6 +44,7 @@ const TaskSection = ({
   onGenerateUpdate,
   isGenerating,
   isGifPlaying,
+  mentionList,
 }: TaskSectionProps) => {
   const [newTask, setNewTask] = useState("");
   const [taskMentionQuery, setTaskMentionQuery] = useState("");

@@ -495,7 +495,7 @@ export default function EODUpdatePage() {
                       variant="ghost"
                       size="icon"
                       onClick={() => removeTask(task.id)}
-                      className="opacity-0 group-hover:opacity-100 hover:bg-white/10 absolute right-2"
+                      className="opacity-100 md:opacity-0 group-hover:opacity-100 hover:bg-white/10 absolute right-2"
                     >
                       <X className="h-4 w-4" />
                     </Button>

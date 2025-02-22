@@ -51,8 +51,8 @@ const NotesSection = ({
       setMentionQuery(query);
       setMentionSuggestions(
         mentionList.filter((name) =>
-          name.toLowerCase().startsWith(query.toLowerCase())
-        )
+          name.toLowerCase().startsWith(query.toLowerCase()),
+        ),
       );
     } else {
       setMentionSuggestions([]);
@@ -75,7 +75,7 @@ const NotesSection = ({
 
     const x = Math.min(
       currentLineText.length * 8 + paddingLeft,
-      textarea.clientWidth - 200
+      textarea.clientWidth - 200,
     );
     const y = currentLineIndex * lineHeight + paddingTop;
 
@@ -100,7 +100,7 @@ const NotesSection = ({
     const newCursorPosition = lastAtSymbolIndex + name.length + 2;
     setTimeout(
       () => textarea.setSelectionRange(newCursorPosition, newCursorPosition),
-      0
+      0,
     );
   };
 

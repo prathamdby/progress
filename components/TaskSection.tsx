@@ -2,7 +2,15 @@
 
 import { useState, useRef, KeyboardEvent, ChangeEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, X, ListTodo, Trash2, AlertTriangle, Loader2, Send } from "lucide-react";
+import {
+  Plus,
+  X,
+  ListTodo,
+  Trash2,
+  AlertTriangle,
+  Loader2,
+  Send,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -40,7 +48,9 @@ const TaskSection = ({
 }: TaskSectionProps) => {
   const [newTask, setNewTask] = useState("");
   const [taskMentionQuery, setTaskMentionQuery] = useState("");
-  const [taskMentionSuggestions, setTaskMentionSuggestions] = useState<string[]>([]);
+  const [taskMentionSuggestions, setTaskMentionSuggestions] = useState<
+    string[]
+  >([]);
   const taskInputRef = useRef<HTMLInputElement>(null);
 
   const handleTaskInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,8 +63,8 @@ const TaskSection = ({
       setTaskMentionQuery(query);
       setTaskMentionSuggestions(
         mentionList.filter((name) =>
-          name.toLowerCase().startsWith(query.toLowerCase())
-        )
+          name.toLowerCase().startsWith(query.toLowerCase()),
+        ),
       );
     } else {
       setTaskMentionSuggestions([]);
@@ -79,7 +89,7 @@ const TaskSection = ({
     const newCursorPosition = lastAtSymbolIndex + name.length + 2;
     setTimeout(
       () => input.setSelectionRange(newCursorPosition, newCursorPosition),
-      0
+      0,
     );
   };
 
@@ -107,7 +117,7 @@ const TaskSection = ({
           return { ...task, done: newDone };
         }
         return task;
-      })
+      }),
     );
   };
 
@@ -187,8 +197,8 @@ const TaskSection = ({
                   <span>Clear All Data</span>
                 </DialogTitle>
                 <DialogDescription className="pt-3">
-                  Are you sure you want to clear all tasks and notes? This action
-                  cannot be undone.
+                  Are you sure you want to clear all tasks and notes? This
+                  action cannot be undone.
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter className="mt-6">
@@ -245,9 +255,7 @@ const TaskSection = ({
                 />
                 <span
                   className={`text-[15px] font-medium transition-all duration-200 truncate ${
-                    task.done
-                      ? "line-through text-white/40"
-                      : "text-white/90"
+                    task.done ? "line-through text-white/40" : "text-white/90"
                   }`}
                 >
                   {task.text}
@@ -274,7 +282,9 @@ const TaskSection = ({
         <div className="flex items-center justify-center">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
-              key={isGifPlaying ? "playing" : isGenerating ? "generating" : "idle"}
+              key={
+                isGifPlaying ? "playing" : isGenerating ? "generating" : "idle"
+              }
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}

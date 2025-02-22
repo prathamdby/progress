@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import type { ConfettiTriggers } from '@/types';
+import { useState, useCallback } from "react";
+import type { ConfettiTriggers } from "@/types";
 
 export const useConfettiTrigger = () => {
   const [confettiTriggers, setConfettiTriggers] = useState<ConfettiTriggers>({

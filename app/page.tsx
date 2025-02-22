@@ -89,7 +89,7 @@ export default function EODUpdatePage() {
     <main className={`min-h-screen pt-8 sm:pt-12 relative ${inter.className}`}>
       {/* Confetti Effects */}
       {Object.entries(confettiTriggers).map(
-        ([key, value]) => value && <ConfettiEffect key={key} />
+        ([key, value]) => value && <ConfettiEffect key={key} />,
       )}
 
       {/* GIF Popup */}

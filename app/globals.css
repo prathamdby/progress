@@ -108,12 +108,13 @@
 
 /* Text Gradients */
 .text-gradient {
-  @apply bg-clip-text text-transparent;
+  @apply inline-block bg-clip-text text-transparent;
   background-image: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 1) 0%,
     rgba(255, 255, 255, 0.7) 100%
   );
+  -webkit-text-stroke: 0.5px transparent;
 }
 
 .text-gradient-title {

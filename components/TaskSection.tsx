@@ -225,11 +225,18 @@ const TaskSection = ({
       </div>
 
       <div className="scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent max-h-[400px] space-y-2 overflow-y-auto">
-        <AnimatePresence initial={false}>
-          {tasks.length === 0 && (
+        <AnimatePresence mode="sync" initial={false}>
+          {tasks.length === 0 ? (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              key="empty"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{
+                duration: 0.25,
+                ease: [0.4, 0.0, 0.2, 1],
+                layout: { duration: 0.25, ease: [0.4, 0.0, 0.2, 1] },
+              }}
               className="flex flex-col items-center justify-center rounded-md border border-white/10 bg-white/5 py-12 text-center"
             >
               <ListTodo className="mb-3 h-8 w-8 text-white/40" />
@@ -237,40 +244,46 @@ const TaskSection = ({
                 Start by creating a task
               </p>
             </motion.div>
-          )}
-          {tasks.map((task) => (
-            <motion.div
-              key={task.id}
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.2 }}
-              className="group relative flex items-center justify-between rounded-md border border-white/10 bg-white/5 p-4 pr-14 transition-colors hover:bg-white/[0.07]"
-            >
-              <div className="flex min-w-0 flex-1 items-center gap-3">
-                <Checkbox
-                  checked={task.done}
-                  onCheckedChange={() => toggleTask(task.id)}
-                  className="border-white/20"
-                />
-                <span
-                  className={`truncate text-[15px] font-medium transition-all duration-200 ${
-                    task.done ? "text-white/40 line-through" : "text-white/90"
-                  }`}
-                >
-                  {task.text}
-                </span>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => removeTask(task.id)}
-                className="absolute right-2 opacity-100 hover:bg-white/10 group-hover:opacity-100 md:opacity-0"
+          ) : (
+            tasks.map((task) => (
+              <motion.div
+                key={task.id}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{
+                  duration: 0.25,
+                  ease: [0.4, 0.0, 0.2, 1],
+                  layout: { duration: 0.25, ease: [0.4, 0.0, 0.2, 1] },
+                }}
+                className="group relative flex items-center justify-between rounded-md border border-white/10 bg-white/5 p-4 pr-14 transition-colors hover:bg-white/[0.07]"
               >
-                <X className="h-4 w-4" />
-              </Button>
-            </motion.div>
-          ))}
+                <div className="flex min-w-0 flex-1 items-center gap-3">
+                  <Checkbox
+                    checked={task.done}
+                    onCheckedChange={() => toggleTask(task.id)}
+                    className="border-white/20"
+                  />
+                  <span
+                    className={`truncate text-[15px] font-medium transition-all duration-200 ${
+                      task.done ? "text-white/40 line-through" : "text-white/90"
+                    }`}
+                  >
+                    {task.text}
+                  </span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => removeTask(task.id)}
+                  className="absolute right-2 opacity-100 hover:bg-white/10 group-hover:opacity-100 md:opacity-0"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </motion.div>
+            ))
+          )}
         </AnimatePresence>
       </div>
 

@@ -133,8 +133,8 @@ export default function EODUpdatePage() {
       setTaskMentionQuery(query);
       setTaskMentionSuggestions(
         mentionList.filter((name) =>
-          name.toLowerCase().startsWith(query.toLowerCase())
-        )
+          name.toLowerCase().startsWith(query.toLowerCase()),
+        ),
       );
     } else {
       setTaskMentionSuggestions([]);
@@ -159,7 +159,7 @@ export default function EODUpdatePage() {
     const newCursorPosition = lastAtSymbolIndex + name.length + 2;
     setTimeout(
       () => input.setSelectionRange(newCursorPosition, newCursorPosition),
-      0
+      0,
     );
   };
 
@@ -187,7 +187,7 @@ export default function EODUpdatePage() {
           return { ...task, done: newDone };
         }
         return task;
-      })
+      }),
     );
   };
 
@@ -265,8 +265,8 @@ export default function EODUpdatePage() {
       setMentionQuery(query);
       setMentionSuggestions(
         mentionList.filter((name) =>
-          name.toLowerCase().startsWith(query.toLowerCase())
-        )
+          name.toLowerCase().startsWith(query.toLowerCase()),
+        ),
       );
     } else {
       setMentionSuggestions([]);
@@ -289,7 +289,7 @@ export default function EODUpdatePage() {
 
     const x = Math.min(
       currentLineText.length * 8 + paddingLeft,
-      textarea.clientWidth - 200
+      textarea.clientWidth - 200,
     );
     const y = currentLineIndex * lineHeight + paddingTop;
 
@@ -314,16 +314,14 @@ export default function EODUpdatePage() {
     const newCursorPosition = lastAtSymbolIndex + name.length + 2;
     setTimeout(
       () => textarea.setSelectionRange(newCursorPosition, newCursorPosition),
-      0
+      0,
     );
   };
 
   return (
-    <main
-      className={`min-h-screen pt-8 sm:pt-12 pb-16 relative ${inter.className}`}
-    >
+    <main className={`min-h-screen pt-8 sm:pt-12 relative ${inter.className}`}>
       {Object.entries(confettiTriggers).map(
-        ([key, value]) => value && <ConfettiEffect key={key} />
+        ([key, value]) => value && <ConfettiEffect key={key} />,
       )}
 
       <GifPopup
@@ -593,10 +591,10 @@ export default function EODUpdatePage() {
         </div>
       </div>
 
-      <div className="mt-4 text-center">
-        <div className="flex flex-col items-center gap-3">
+      <div className="mt-16 sm:mt-24 py-8 text-center border-t border-white/5 bg-white/[0.02]">
+        <div className="flex flex-col items-center gap-4">
           <p className="text-sm font-medium text-white/60">
-          Made with ♥️ by Pratham&apos;s
+            Made with ♥️ by Pratham
           </p>
           <div className="flex items-center gap-4">
             <Link

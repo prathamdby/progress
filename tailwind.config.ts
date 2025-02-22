@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-roboto)'],
+        sans: ["var(--font-roboto)"],
       },
       colors: {
         border: "hsl(var(--border))",

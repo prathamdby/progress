@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     if (!searchTerm) {
       return NextResponse.json(
         { error: "Search term is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -22,14 +22,14 @@ export async function GET(request: Request) {
 
     const response = await fetch(
       `https://tenor.googleapis.com/v2/search?q=${encodeURIComponent(
-        searchTerm
+        searchTerm,
       )}&key=${API_KEY}&client_key=my_app&limit=1&pos=${randomOffset}&random=true&media_filter=gif`,
       {
         headers: {
           Accept: "application/json",
         },
         cache: "no-store",
-      }
+      },
     );
 
     if (!response.ok) {
@@ -64,7 +64,7 @@ export async function GET(request: Request) {
           Pragma: "no-cache",
           Expires: "0",
         },
-      }
+      },
     );
   }
 }

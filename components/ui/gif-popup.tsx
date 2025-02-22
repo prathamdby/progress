@@ -45,7 +45,7 @@ export const GifPopup = ({ isVisible, onClose, searchTerm }: GifPopupProps) => {
                 "Cache-Control": "no-cache, no-store, must-revalidate",
                 Pragma: "no-cache",
               },
-            }
+            },
           );
 
           if (!response.ok) {

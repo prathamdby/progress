@@ -28,6 +28,7 @@ import {
   ScrollText,
   Trash2,
   AlertTriangle,
+  Loader2,
 } from "lucide-react";
 import {
   Dialog,
@@ -65,6 +66,7 @@ interface ConfettiTriggers {
 }
 
 export default function EODUpdatePage() {
+  const [isGenerating, setIsGenerating] = useState(false);
   const [confettiTriggers, setConfettiTriggers] = useState<ConfettiTriggers>({
     taskAdded: false,
     taskCompleted: false,
@@ -133,8 +135,8 @@ export default function EODUpdatePage() {
       setTaskMentionQuery(query);
       setTaskMentionSuggestions(
         mentionList.filter((name) =>
-          name.toLowerCase().startsWith(query.toLowerCase()),
-        ),
+          name.toLowerCase().startsWith(query.toLowerCase())
+        )
       );
     } else {
       setTaskMentionSuggestions([]);
@@ -159,7 +161,7 @@ export default function EODUpdatePage() {
     const newCursorPosition = lastAtSymbolIndex + name.length + 2;
     setTimeout(
       () => input.setSelectionRange(newCursorPosition, newCursorPosition),
-      0,
+      0
     );
   };
 
@@ -187,7 +189,7 @@ export default function EODUpdatePage() {
           return { ...task, done: newDone };
         }
         return task;
-      }),
+      })
     );
   };
 
@@ -204,6 +206,7 @@ export default function EODUpdatePage() {
   };
 
   const generateUpdate = () => {
+    setIsGenerating(true);
     // Check if there's no content to generate update from
     const hasNoTasks = tasks.length === 0;
     const hasNoNotes = !notes.trim();
@@ -211,6 +214,7 @@ export default function EODUpdatePage() {
     if (hasNoTasks && hasNoNotes) {
       setGifPopup({ show: true, type: "angry" });
       setAiUpdate(""); // Clear any existing update
+      setIsGenerating(false);
       return;
     }
 
@@ -231,6 +235,7 @@ export default function EODUpdatePage() {
       setAiUpdate(update);
       setGifPopup({ show: true, type: "happy" });
       triggerConfetti("updateGenerated");
+      setIsGenerating(false);
     });
   };
 
@@ -265,8 +270,8 @@ export default function EODUpdatePage() {
       setMentionQuery(query);
       setMentionSuggestions(
         mentionList.filter((name) =>
-          name.toLowerCase().startsWith(query.toLowerCase()),
-        ),
+          name.toLowerCase().startsWith(query.toLowerCase())
+        )
       );
     } else {
       setMentionSuggestions([]);
@@ -289,7 +294,7 @@ export default function EODUpdatePage() {
 
     const x = Math.min(
       currentLineText.length * 8 + paddingLeft,
-      textarea.clientWidth - 200,
+      textarea.clientWidth - 200
     );
     const y = currentLineIndex * lineHeight + paddingTop;
 
@@ -314,14 +319,14 @@ export default function EODUpdatePage() {
     const newCursorPosition = lastAtSymbolIndex + name.length + 2;
     setTimeout(
       () => textarea.setSelectionRange(newCursorPosition, newCursorPosition),
-      0,
+      0
     );
   };
 
   return (
     <main className={`min-h-screen pt-8 sm:pt-12 relative ${inter.className}`}>
       {Object.entries(confettiTriggers).map(
-        ([key, value]) => value && <ConfettiEffect key={key} />,
+        ([key, value]) => value && <ConfettiEffect key={key} />
       )}
 
       <GifPopup
@@ -507,8 +512,41 @@ export default function EODUpdatePage() {
               disabled={gifPopup.show}
               className="w-full bg-white/10 hover:bg-white/20 text-white h-12 transition-colors"
             >
-              <Send className="h-5 w-5 mr-2" />
-              Generate Update
+              <div className="flex items-center justify-center">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={
+                      gifPopup.show
+                        ? "playing"
+                        : isGenerating
+                        ? "generating"
+                        : "idle"
+                    }
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex items-center"
+                  >
+                    {gifPopup.show ? (
+                      <>
+                        <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                        <span>Playing GIF...</span>
+                      </>
+                    ) : isGenerating ? (
+                      <>
+                        <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                        <span>Generating...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="h-5 w-5 mr-2" />
+                        <span>Generate Update</span>
+                      </>
+                    )}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </Button>
           </motion.div>
 

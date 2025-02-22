@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ConfettiEffect } from "@/components/ui/confetti";
+import { GifPopup } from "@/components/ui/gif-popup";
 import {
   Send,
   Plus,
@@ -78,6 +79,13 @@ export default function EODUpdatePage() {
   const [newTask, setNewTask] = useState("");
   const [notes, setNotes] = useState("");
   const [aiUpdate, setAiUpdate] = useState("");
+  const [gifPopup, setGifPopup] = useState<{
+    show: boolean;
+    type: "angry" | "happy";
+  }>({
+    show: false,
+    type: "angry",
+  });
   const [mentionQuery, setMentionQuery] = useState("");
   const [taskMentionQuery, setTaskMentionQuery] = useState("");
   const [mentionSuggestions, setMentionSuggestions] = useState<string[]>([]);
@@ -196,6 +204,16 @@ export default function EODUpdatePage() {
   };
 
   const generateUpdate = () => {
+    // Check if there's no content to generate update from
+    const hasNoTasks = tasks.length === 0;
+    const hasNoNotes = !notes.trim();
+
+    if (hasNoTasks && hasNoNotes) {
+      setGifPopup({ show: true, type: "angry" });
+      setAiUpdate(""); // Clear any existing update
+      return;
+    }
+
     const completedTasks = tasks
       .filter((task) => task.done)
       .map((task) => task.text)
@@ -204,10 +222,16 @@ export default function EODUpdatePage() {
       .filter((task) => !task.done)
       .map((task) => task.text)
       .join(", ");
-    setAiUpdate(`Today's accomplishments: ${completedTasks}. 
+    const update = `Today's accomplishments: ${completedTasks}. 
     Notes: ${notes}. 
-    Pending tasks for tomorrow: ${pendingTasks}.`);
-    triggerConfetti("updateGenerated");
+    Pending tasks for tomorrow: ${pendingTasks}.`;
+
+    // Single synchronized update for all states
+    requestAnimationFrame(() => {
+      setAiUpdate(update);
+      setGifPopup({ show: true, type: "happy" });
+      triggerConfetti("updateGenerated");
+    });
   };
 
   const copyToClipboard = async () => {
@@ -301,6 +325,14 @@ export default function EODUpdatePage() {
       {Object.entries(confettiTriggers).map(
         ([key, value]) => value && <ConfettiEffect key={key} />
       )}
+
+      <GifPopup
+        isVisible={gifPopup.show}
+        onClose={() => setGifPopup((prev) => ({ ...prev, show: false }))}
+        searchTerm={
+          gifPopup.type === "angry" ? "super angry cat" : "silly cat dance png"
+        }
+      />
 
       <GridPattern />
       <div className="relative z-10 max-w-7xl mx-auto px-8">
@@ -474,6 +506,7 @@ export default function EODUpdatePage() {
 
             <Button
               onClick={generateUpdate}
+              disabled={gifPopup.show}
               className="w-full bg-white/10 hover:bg-white/20 text-white h-12 transition-colors"
             >
               <Send className="h-5 w-5 mr-2" />

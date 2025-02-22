@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 interface GifPopupProps {
   isVisible: boolean;
@@ -54,7 +55,7 @@ export const GifPopup = ({ isVisible, onClose, searchTerm }: GifPopupProps) => {
           const data = await response.json();
           if (data.error) throw new Error(data.error);
 
-          const img = new Image();
+          const img = new window.Image();
           img.src = data.gif;
 
           img.onload = () => {
@@ -68,7 +69,7 @@ export const GifPopup = ({ isVisible, onClose, searchTerm }: GifPopupProps) => {
           console.error("Failed to fetch GIF:", error);
           const fallbackGif =
             "https://media.tenor.com/hWyrzkGxeJEAAAAC/cat-angry.gif";
-          const img = new Image();
+          const img = new window.Image();
           img.src = fallbackGif;
 
           img.onload = () => {
@@ -134,10 +135,13 @@ export const GifPopup = ({ isVisible, onClose, searchTerm }: GifPopupProps) => {
             className="fixed top-0 left-0 z-[9999] pointer-events-none"
           >
             <div className="relative rounded-lg overflow-hidden shadow-2xl w-[300px] h-[300px] bg-white">
-              <img
+              <Image
                 src={state.gif}
                 alt={`Random ${searchTerm} gif`}
                 className="w-full h-full object-contain"
+                width={300}
+                height={300}
+                unoptimized
               />
             </div>
           </motion.div>

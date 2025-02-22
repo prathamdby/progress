@@ -86,8 +86,8 @@ export default function EODUpdatePage() {
     show: false,
     type: "angry",
   });
-  const [mentionQuery, setMentionQuery] = useState("");
-  const [taskMentionQuery, setTaskMentionQuery] = useState("");
+  const [_mentionQuery, setMentionQuery] = useState("");
+  const [_taskMentionQuery, setTaskMentionQuery] = useState("");
   const [mentionSuggestions, setMentionSuggestions] = useState<string[]>([]);
   const [taskMentionSuggestions, setTaskMentionSuggestions] = useState<
     string[]
@@ -241,9 +241,9 @@ export default function EODUpdatePage() {
     }
   };
 
-  const debounce = (func: Function, wait: number) => {
+  const debounce = (func: (...args: unknown[]) => void, wait: number) => {
     let timeout: NodeJS.Timeout;
-    return (...args: any[]) => {
+    return (...args: unknown[]) => {
       clearTimeout(timeout);
       timeout = setTimeout(() => func(...args), wait);
     };
@@ -596,7 +596,7 @@ export default function EODUpdatePage() {
       <div className="mt-4 text-center">
         <div className="flex flex-col items-center gap-3">
           <p className="text-sm font-medium text-white/60">
-            Made with ♥️ by Pratham
+          Made with ♥️ by Pratham&apos;s
           </p>
           <div className="flex items-center gap-4">
             <Link

@@ -1,7 +1,13 @@
 "use client";
 
-import { Settings, X } from "lucide-react";
+import { ChevronDown, Settings, X } from "lucide-react";
 import { Button } from "./ui/button";
+import {
+  AnimalType,
+  storage,
+  StorageKeys,
+  TeamMember,
+} from "@/lib/localStorage";
 import {
   Dialog,
   DialogContent,
@@ -11,13 +17,16 @@ import {
 } from "./ui/dialog";
 import { useEffect, useState } from "react";
 import { Input } from "./ui/input";
-import { storage, StorageKeys, TeamMember } from "@/lib/localStorage";
 
 export interface SettingsMenuProps {
   onTeamMembersChange: () => void;
+  onAnimalTypeChange?: (type: AnimalType) => void;
 }
 
-export function SettingsMenu({ onTeamMembersChange }: SettingsMenuProps) {
+export function SettingsMenu({
+  onTeamMembersChange,
+  onAnimalTypeChange,
+}: SettingsMenuProps) {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>(() => {
     return storage.getItem(StorageKeys.TEAM_MEMBERS) || [];
   });
@@ -28,6 +37,14 @@ export function SettingsMenu({ onTeamMembersChange }: SettingsMenuProps) {
   }, [teamMembers, onTeamMembersChange]);
 
   const [newUsername, setNewUsername] = useState("");
+  const [animalType, setAnimalType] = useState<AnimalType>(() => {
+    return storage.getItem(StorageKeys.ANIMAL_TYPE) || "cat";
+  });
+
+  useEffect(() => {
+    storage.setItem(StorageKeys.ANIMAL_TYPE, animalType);
+    onAnimalTypeChange?.(animalType);
+  }, [animalType, onAnimalTypeChange]);
 
   const addTeamMember = () => {
     if (!newUsername) return;
@@ -99,7 +116,19 @@ export function SettingsMenu({ onTeamMembersChange }: SettingsMenuProps) {
               ))}
             </div>
           </div>
-          {/* Additional settings sections can be added here */}
+          <div className="space-y-4">
+            <h3 className="font-medium leading-none">GIF Settings</h3>
+            <div className="flex items-center gap-2">
+              <select
+                value={animalType}
+                onChange={(e) => setAnimalType(e.target.value as AnimalType)}
+                className="w-full rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm focus:border-white/20 focus:outline-none focus:ring-0"
+              >
+                <option value="cat">Cat GIFs</option>
+                <option value="dog">Dog GIFs</option>
+              </select>
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

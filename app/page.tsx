@@ -11,7 +11,7 @@ import Footer from "@/components/Footer";
 import { ConfettiEffect } from "@/components/ui/confetti";
 import { GifPopup } from "@/components/ui/gif-popup";
 import useConfettiTrigger from "@/hooks/useConfettiTrigger";
-import { storage, StorageKeys } from "@/lib/localStorage";
+import { storage, StorageKeys, AnimalType } from "@/lib/localStorage";
 import type { Task } from "@/types";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -40,6 +40,9 @@ export default function EODUpdatePage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [notes, setNotes] = useState("");
   const [aiUpdate, setAiUpdate] = useState("");
+  const [animalType, setAnimalType] = useState<AnimalType>(() => {
+    return storage.getItem(StorageKeys.ANIMAL_TYPE) || "cat";
+  });
   const [gifPopup, setGifPopup] = useState<{
     show: boolean;
     type: "angry" | "happy";
@@ -114,7 +117,9 @@ export default function EODUpdatePage() {
         isVisible={gifPopup.show}
         onClose={() => setGifPopup((prev) => ({ ...prev, show: false }))}
         searchTerm={
-          gifPopup.type === "angry" ? "super angry cat" : "silly cat dance png"
+          gifPopup.type === "angry"
+            ? `super angry ${animalType}`
+            : `silly ${animalType} dance png`
         }
       />
 
@@ -122,6 +127,10 @@ export default function EODUpdatePage() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-8">
         <Header onTeamMembersChange={updateMentionList} />
+        <SettingsMenu
+          onTeamMembersChange={updateMentionList}
+          onAnimalTypeChange={setAnimalType}
+        />
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
           {/* Tasks Section */}

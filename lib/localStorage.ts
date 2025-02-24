@@ -5,7 +5,10 @@ export const StorageKeys = {
   TASKS: "progress:tasks",
   NOTES: "progress:notes",
   TEAM_MEMBERS: "progress:team_members",
+  ANIMAL_TYPE: "progress:animal_type",
 } as const;
+
+export type AnimalType = "cat" | "dog";
 
 export type StorageKeysType = (typeof StorageKeys)[keyof typeof StorageKeys];
 
@@ -25,6 +28,7 @@ export interface StoreData {
   [StorageKeys.TASKS]: Task[];
   [StorageKeys.NOTES]: string;
   [StorageKeys.TEAM_MEMBERS]: TeamMember[];
+  [StorageKeys.ANIMAL_TYPE]: AnimalType;
 }
 
 export interface TeamMember {

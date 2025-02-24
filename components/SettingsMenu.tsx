@@ -97,7 +97,7 @@ export function SettingsMenu({
                 Add
               </Button>
             </div>
-            <div className="space-y-2">
+            <div className="max-h-[180px] space-y-2 overflow-y-auto pr-2">
               {teamMembers.map((member) => (
                 <div
                   key={member.id}

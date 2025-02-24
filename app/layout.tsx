@@ -18,11 +18,11 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Daily Progress Tracker | Stay Productive",
+  title: "Progress - Task Manager",
   description:
-    "Track your daily accomplishments, manage tasks, and collaborate with your team efficiently. A modern solution for daily stand-ups and progress tracking.",
-  keywords: "task management, daily updates, team collaboration, productivity",
-  authors: [{ name: "Progress Tracker Team" }],
+    "A modern task manager to help you track and improve your daily progress. Track accomplishments, manage tasks, and collaborate with your team efficiently.",
+  keywords: "task management, daily progress, team collaboration, productivity",
+  authors: [{ name: "Pratham Dubey" }],
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -30,8 +30,9 @@ export const metadata: Metadata = {
     title: "Progress",
   },
   openGraph: {
-    title: "Daily Progress Tracker",
-    description: "Streamline your daily updates and team collaboration",
+    title: "Progress - Task Manager",
+    description:
+      "A modern task manager to help you track and improve your daily progress",
     type: "website",
   },
   icons: {

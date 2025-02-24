@@ -1,7 +1,8 @@
 {
-  "name": "my-app",
+  "name": "progress",
   "version": "0.1.0",
   "private": true,
+  "author": "Pratham Dubey",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

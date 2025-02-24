@@ -1,6 +1,6 @@
-# Progress Tracker
+# Progress
 
-A modern task and progress tracking application built with Next.js that helps you manage your daily tasks, take notes, and generate summary updates. Perfect for daily standups and end-of-day reports.
+A modern task manager built with Next.js that helps you track and improve your daily progress. Manage tasks, take notes, and collaborate with your team efficiently.
 
 ## Features
 

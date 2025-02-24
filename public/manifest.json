@@ -1,7 +1,7 @@
 {
-  "name": "Progress - Task Management",
+  "name": "Progress - Task Manager",
   "short_name": "Progress",
-  "description": "A modern task management application for tracking your daily progress",
+  "description": "A modern task manager to help you track and improve your daily progress",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

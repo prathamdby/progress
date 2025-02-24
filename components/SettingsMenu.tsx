@@ -126,6 +126,10 @@ export function SettingsMenu({
               >
                 <option value="cat">Cat GIFs</option>
                 <option value="dog">Dog GIFs</option>
+                <option value="rabbit">Bunny GIFs</option>
+                <option value="hamster">Hamster GIFs</option>
+                <option value="panda">Panda GIFs</option>
+                <option value="penguin">Penguin GIFs</option>
               </select>
             </div>
           </div>

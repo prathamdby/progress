@@ -8,7 +8,13 @@ export const StorageKeys = {
   ANIMAL_TYPE: "progress:animal_type",
 } as const;
 
-export type AnimalType = "cat" | "dog";
+export type AnimalType =
+  | "cat"
+  | "dog"
+  | "rabbit"
+  | "hamster"
+  | "panda"
+  | "penguin";
 
 export type StorageKeysType = (typeof StorageKeys)[keyof typeof StorageKeys];
 

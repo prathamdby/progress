@@ -18,6 +18,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://progress-eosin.vercel.app"),
   title: "Progress - Task Manager",
   description:
     "A modern task manager to help you track and improve your daily progress. Track accomplishments, manage tasks, and collaborate with your team efficiently.",
@@ -32,8 +33,32 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Progress - Task Manager",
     description:
-      "A modern task manager to help you track and improve your daily progress",
+      "A modern task manager to help you track and improve your daily progress. Track accomplishments, manage tasks, and collaborate with your team efficiently.",
+    url: "https://progress-eosin.vercel.app",
+    siteName: "Progress",
+    locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "https://progress-eosin.vercel.app/icons/icon-512x512.png",
+        width: 512,
+        height: 512,
+        alt: "Progress App Icon",
+      },
+      {
+        url: "https://progress-eosin.vercel.app/icons/icon-192x192.png",
+        width: 192,
+        height: 192,
+        alt: "Progress App Icon",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Progress - Task Manager",
+    description:
+      "A modern task manager to help you track and improve your daily progress. Track accomplishments, manage tasks, and collaborate with your team efficiently.",
+    images: ["https://progress-eosin.vercel.app/icons/icon-512x512.png"],
   },
   icons: {
     icon: [

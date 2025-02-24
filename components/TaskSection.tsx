@@ -47,7 +47,7 @@ const TaskSection = ({
   mentionList,
 }: TaskSectionProps) => {
   const [newTask, setNewTask] = useState("");
-  const [taskMentionQuery, setTaskMentionQuery] = useState("");
+  const [, setTaskMentionQuery] = useState("");
   const [taskMentionSuggestions, setTaskMentionSuggestions] = useState<
     string[]
   >([]);
@@ -136,7 +136,9 @@ const TaskSection = ({
     >
       <div className="flex items-center gap-3">
         <ListTodo className="h-5 w-5 text-white" />
-        <h2 className="text-gradient text-xl font-semibold">Today's Tasks</h2>
+        <h2 className="text-gradient text-xl font-semibold">
+          Today&apos;s Tasks
+        </h2>
       </div>
 
       <div className="flex gap-2">

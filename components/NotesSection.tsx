@@ -22,7 +22,7 @@ const NotesSection = ({
   mentionList,
   triggerConfetti,
 }: NotesSectionProps) => {
-  const [mentionQuery, setMentionQuery] = useState("");
+  const [, setMentionQuery] = useState("");
   const [mentionSuggestions, setMentionSuggestions] = useState<string[]>([]);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const textareaRef = useRef<HTMLTextAreaElement>(null);

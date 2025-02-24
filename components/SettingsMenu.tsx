@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, Settings, X } from "lucide-react";
+import { Settings, X } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   AnimalType,

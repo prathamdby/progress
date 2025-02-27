@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Roboto } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const roboto = Roboto({
@@ -86,6 +87,7 @@ export default function RootLayout({
         className={`${roboto.variable} min-h-screen bg-gradient-to-b from-black via-blue-950/80 to-black font-sans text-white antialiased`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );

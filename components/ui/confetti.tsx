@@ -13,16 +13,23 @@ export function ConfettiEffect({ duration = 4000 }: ConfettiEffectProps) {
 
   useEffect(() => {
     // Set initial dimensions
+    const getFullHeight = () =>
+      Math.max(
+        window.innerHeight,
+        document.documentElement.scrollHeight,
+        document.documentElement.offsetHeight
+      );
+
     setDimensions({
       width: window.innerWidth,
-      height: window.innerHeight,
+      height: getFullHeight(),
     });
 
     // Update dimensions on window resize
     const handleResize = () => {
       setDimensions({
         width: window.innerWidth,
-        height: window.innerHeight,
+        height: getFullHeight(),
       });
     };
 

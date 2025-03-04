@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { Inter } from "next/font/google";
 import GridPattern from "@/components/GridPattern";
 import Header from "@/components/Header";
-import { SettingsMenu } from "@/components/SettingsMenu";
+import { Sidebar } from "@/components/Sidebar";
 import TaskSection from "@/components/TaskSection";
 import NotesSection from "@/components/NotesSection";
 import Footer from "@/components/Footer";
@@ -90,7 +90,7 @@ export default function EODUpdatePage() {
 
         <div className="relative z-10 mx-auto max-w-7xl px-8">
           <Header />
-          <SettingsMenu />
+          <Sidebar />
 
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
             {/* Tasks Section */}

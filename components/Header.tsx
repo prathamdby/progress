@@ -2,12 +2,10 @@
 
 import { Origami } from "lucide-react";
 import { motion } from "framer-motion";
-import { SettingsMenu } from "./SettingsMenu";
 
 export const Header = () => {
   return (
     <>
-      <SettingsMenu />
       <div className="mb-10 flex items-center justify-center gap-3 sm:mb-16">
         <Origami className="h-8 w-8 text-white/90" />
         <span className="text-gradient text-xl font-semibold">Progress</span>

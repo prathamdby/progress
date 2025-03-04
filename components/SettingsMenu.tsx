@@ -2,12 +2,8 @@
 
 import { Settings, X } from "lucide-react";
 import { Button } from "./ui/button";
-import {
-  AnimalType,
-  storage,
-  StorageKeys,
-  TeamMember,
-} from "@/lib/localStorage";
+import { AnimalType } from "@/lib/localStorage";
+import { useStore } from "@/stores/useStore";
 import {
   Dialog,
   DialogContent,
@@ -18,41 +14,19 @@ import {
 import { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 
-export interface SettingsMenuProps {
-  onTeamMembersChange: () => void;
-  onAnimalTypeChange?: (type: AnimalType) => void;
-}
-
-export function SettingsMenu({
-  onTeamMembersChange,
-  onAnimalTypeChange,
-}: SettingsMenuProps) {
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>(() => {
-    return storage.getItem(StorageKeys.TEAM_MEMBERS) || [];
-  });
-
-  useEffect(() => {
-    storage.setItem(StorageKeys.TEAM_MEMBERS, teamMembers);
-    onTeamMembersChange();
-  }, [teamMembers, onTeamMembersChange]);
-
+export function SettingsMenu() {
+  const { teamMembers, setTeamMembers, animalType, setAnimalType } = useStore();
   const [newUsername, setNewUsername] = useState("");
-  const [animalType, setAnimalType] = useState<AnimalType>(() => {
-    return storage.getItem(StorageKeys.ANIMAL_TYPE) || "cat";
-  });
-
-  useEffect(() => {
-    storage.setItem(StorageKeys.ANIMAL_TYPE, animalType);
-    onAnimalTypeChange?.(animalType);
-  }, [animalType, onAnimalTypeChange]);
 
   const addTeamMember = () => {
     if (!newUsername) return;
 
-    setTeamMembers([
-      ...teamMembers,
-      { id: crypto.randomUUID(), username: newUsername },
-    ]);
+    if (!teamMembers.some((member) => member.username === newUsername)) {
+      setTeamMembers([
+        ...teamMembers,
+        { id: crypto.randomUUID(), username: newUsername },
+      ]);
+    }
     setNewUsername("");
   };
 

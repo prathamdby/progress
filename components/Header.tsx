@@ -4,14 +4,10 @@ import { Origami } from "lucide-react";
 import { motion } from "framer-motion";
 import { SettingsMenu } from "./SettingsMenu";
 
-export interface HeaderProps {
-  onTeamMembersChange: () => void;
-}
-
-export const Header = ({ onTeamMembersChange }: HeaderProps) => {
+export const Header = () => {
   return (
     <>
-      <SettingsMenu onTeamMembersChange={onTeamMembersChange} />
+      <SettingsMenu />
       <div className="mb-10 flex items-center justify-center gap-3 sm:mb-16">
         <Origami className="h-8 w-8 text-white/90" />
         <span className="text-gradient text-xl font-semibold">Progress</span>

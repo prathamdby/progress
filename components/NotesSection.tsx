@@ -6,22 +6,15 @@ import { ScrollText, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import type { ConfettiTriggers } from "@/types";
+import { useStore } from "@/stores/useStore";
 
 interface NotesSectionProps {
-  notes: string;
-  setNotes: (notes: string) => void;
   aiUpdate: string;
-  mentionList: string[];
   triggerConfetti: (type: keyof ConfettiTriggers) => void;
 }
 
-const NotesSection = ({
-  notes,
-  setNotes,
-  aiUpdate,
-  mentionList,
-  triggerConfetti,
-}: NotesSectionProps) => {
+const NotesSection = ({ aiUpdate, triggerConfetti }: NotesSectionProps) => {
+  const { notes, setNotes, teamMembers } = useStore();
   const [, setMentionQuery] = useState("");
   const [mentionSuggestions, setMentionSuggestions] = useState<string[]>([]);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
@@ -50,9 +43,9 @@ const NotesSection = ({
       const query = lastWord.slice(1);
       setMentionQuery(query);
       setMentionSuggestions(
-        mentionList.filter((name) =>
-          name.toLowerCase().startsWith(query.toLowerCase())
-        )
+        teamMembers
+          .map((member) => member.username)
+          .filter((name) => name.toLowerCase().startsWith(query.toLowerCase()))
       );
     } else {
       setMentionSuggestions([]);

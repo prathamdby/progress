@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, KeyboardEvent, ChangeEvent } from "react";
+import { useRef, useState, KeyboardEvent, ChangeEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus,
@@ -24,30 +24,26 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
-import type { Task, ConfettiTriggers } from "@/types";
-import { storage, StorageKeys } from "@/lib/localStorage";
+import type { ConfettiTriggers } from "@/types";
+import { useStore } from "@/stores/useStore";
 
 interface TaskSectionProps {
-  tasks: Task[];
-  setTasks: (tasks: Task[]) => void;
   triggerConfetti: (type: keyof ConfettiTriggers) => void;
   onGenerateUpdate: () => void;
   isGenerating: boolean;
   isGifPlaying: boolean;
-  mentionList: string[];
 }
 
 const TaskSection = ({
-  tasks,
-  setTasks,
   triggerConfetti,
   onGenerateUpdate,
   isGenerating,
   isGifPlaying,
-  mentionList,
 }: TaskSectionProps) => {
+  const { tasks, addTask, removeTask, toggleTask, clearAllData, teamMembers } =
+    useStore();
   const [newTask, setNewTask] = useState("");
-  const [, setTaskMentionQuery] = useState("");
+  const [taskMentionQuery, setTaskMentionQuery] = useState("");
   const [taskMentionSuggestions, setTaskMentionSuggestions] = useState<
     string[]
   >([]);
@@ -62,16 +58,16 @@ const TaskSection = ({
       const query = lastWord.slice(1);
       setTaskMentionQuery(query);
       setTaskMentionSuggestions(
-        mentionList.filter((name) =>
-          name.toLowerCase().startsWith(query.toLowerCase())
-        )
+        teamMembers
+          .map((member) => member.username)
+          .filter((name) => name.toLowerCase().startsWith(query.toLowerCase()))
       );
     } else {
       setTaskMentionSuggestions([]);
     }
   };
 
-  const insertTaskMention = (name: string) => {
+  const insertTaskMention = (name: string): void => {
     if (!taskInputRef.current) return;
 
     const input = taskInputRef.current;
@@ -93,38 +89,29 @@ const TaskSection = ({
     );
   };
 
-  const addTask = () => {
+  const handleAddTask = () => {
     if (newTask.trim()) {
-      setTasks([...tasks, { id: Date.now(), text: newTask, done: false }]);
+      addTask(newTask);
       setNewTask("");
       triggerConfetti("taskAdded");
     }
   };
 
-  const removeTask = (id: number) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const handleRemoveTask = (id: number) => {
+    removeTask(id);
     triggerConfetti("taskDeleted");
   };
 
-  const toggleTask = (id: number) => {
-    setTasks(
-      tasks.map((task) => {
-        if (task.id === id) {
-          const newDone = !task.done;
-          if (newDone) {
-            triggerConfetti("taskCompleted");
-          }
-          return { ...task, done: newDone };
-        }
-        return task;
-      })
-    );
+  const handleToggleTask = (id: number) => {
+    toggleTask(id);
+    const task = tasks.find((t) => t.id === id);
+    if (task && !task.done) {
+      triggerConfetti("taskCompleted");
+    }
   };
 
-  const clearAllData = () => {
-    setTasks([]);
-    storage.removeItem(StorageKeys.TASKS);
-    storage.removeItem(StorageKeys.NOTES);
+  const handleClearAllData = () => {
+    clearAllData();
     triggerConfetti("allTasksCleared");
   };
 
@@ -151,7 +138,7 @@ const TaskSection = ({
             value={newTask}
             onChange={handleTaskInputChange}
             onKeyPress={(e: KeyboardEvent<HTMLInputElement>) =>
-              e.key === "Enter" && addTask()
+              e.key === "Enter" && handleAddTask()
             }
           />
           <AnimatePresence>
@@ -177,7 +164,7 @@ const TaskSection = ({
         </div>
         <div className="flex gap-2">
           <Button
-            onClick={addTask}
+            onClick={handleAddTask}
             size="icon"
             className="bg-white/10 text-white transition-colors hover:bg-white/20"
           >
@@ -214,7 +201,7 @@ const TaskSection = ({
                 </DialogClose>
                 <DialogClose asChild>
                   <Button
-                    onClick={clearAllData}
+                    onClick={handleClearAllData}
                     className="w-full bg-red-500/20 text-red-500 hover:bg-red-500/30 sm:w-auto"
                   >
                     Clear All
@@ -264,7 +251,7 @@ const TaskSection = ({
                 <div className="flex min-w-0 flex-1 items-center gap-3">
                   <Checkbox
                     checked={task.done}
-                    onCheckedChange={() => toggleTask(task.id)}
+                    onCheckedChange={() => handleToggleTask(task.id)}
                     className="border-white/20"
                   />
                   <span
@@ -278,7 +265,7 @@ const TaskSection = ({
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => removeTask(task.id)}
+                  onClick={() => handleRemoveTask(task.id)}
                   className="absolute right-2 opacity-100 hover:bg-white/10 group-hover:opacity-100 md:opacity-0"
                 >
                   <X className="h-4 w-4" />

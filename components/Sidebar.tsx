@@ -101,7 +101,7 @@ export function Sidebar() {
                 Add
               </Button>
             </div>
-            <div className="scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/10 h-[140px] space-y-2 overflow-y-auto pr-2">
+            <div className="scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/10 max-h-[140px] space-y-2 overflow-y-auto pr-2">
               {teamMembers.map((member) => (
                 <div
                   key={member.id}

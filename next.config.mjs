@@ -6,6 +6,9 @@ const nextConfig = {
     // Disable ESLint during builds
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    turbo: {}
+  },
 };
 
 export default withPWA({

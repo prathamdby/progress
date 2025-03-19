@@ -10,6 +10,7 @@ import {
   AlertTriangle,
   Loader2,
   Send,
+  Maximize2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -246,7 +247,7 @@ const TaskSection = ({
                   ease: [0.4, 0.0, 0.2, 1],
                   layout: { duration: 0.25, ease: [0.4, 0.0, 0.2, 1] },
                 }}
-                className="group relative flex items-center justify-between rounded-md border border-white/10 bg-white/5 p-4 pr-14 transition-colors hover:bg-white/[0.07]"
+                className="group relative flex items-center justify-between rounded-md border border-white/10 bg-white/5 p-4 pr-24 transition-colors hover:bg-white/[0.07]"
               >
                 <div className="flex min-w-0 flex-1 items-center gap-3">
                   <Checkbox
@@ -262,14 +263,67 @@ const TaskSection = ({
                     {task.text}
                   </span>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleRemoveTask(task.id)}
-                  className="absolute right-2 opacity-100 hover:bg-white/10 group-hover:opacity-100 md:opacity-0"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
+                <div className="absolute right-2 flex gap-1">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="opacity-100 hover:bg-white/10 group-hover:opacity-100 md:opacity-0"
+                      >
+                        <Maximize2 className="h-4 w-4" />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Task Details</DialogTitle>
+                      </DialogHeader>
+                      <div className="mt-4 space-y-4">
+                        <div className="flex gap-3">
+                          <div className="pt-1">
+                            <Checkbox
+                              checked={task.done}
+                              onCheckedChange={() => handleToggleTask(task.id)}
+                              className="border-white/20"
+                            />
+                          </div>
+                          <div className="flex-1">
+                            <span
+                              className={`whitespace-pre-wrap text-[15px] font-medium leading-relaxed transition-all duration-200 ${
+                                task.done
+                                  ? "text-white/40 line-through"
+                                  : "text-white/90"
+                              }`}
+                            >
+                              {task.text}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="text-sm text-white/60">
+                          <p>Created: {new Date(task.id).toLocaleString()}</p>
+                        </div>
+                      </div>
+                      <DialogFooter className="mt-6">
+                        <DialogClose asChild>
+                          <Button
+                            onClick={() => handleRemoveTask(task.id)}
+                            className="w-full bg-red-500/20 text-red-500 hover:bg-red-500/30 sm:w-auto"
+                          >
+                            Delete Task
+                          </Button>
+                        </DialogClose>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleRemoveTask(task.id)}
+                    className="opacity-100 hover:bg-white/10 group-hover:opacity-100 md:opacity-0"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
               </motion.div>
             ))
           )}

@@ -2,11 +2,12 @@
 
 import { useState, useRef, ChangeEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ScrollText, Copy } from "lucide-react";
+import { ScrollText, Copy, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import type { ConfettiTriggers } from "@/types";
 import { useStore } from "@/stores/useStore";
+import { useToast } from "@/hooks/use-toast";
 
 interface NotesSectionProps {
   aiUpdate: string;
@@ -14,7 +15,9 @@ interface NotesSectionProps {
 }
 
 const NotesSection = ({ aiUpdate, triggerConfetti }: NotesSectionProps) => {
-  const { notes, setNotes, teamMembers } = useStore();
+  const { notes, setNotes, teamMembers, clearNotes, undoNoteClear } =
+    useStore();
+  const { toast } = useToast();
   const [, setMentionQuery] = useState("");
   const [mentionSuggestions, setMentionSuggestions] = useState<string[]>([]);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
@@ -110,9 +113,44 @@ const NotesSection = ({ aiUpdate, triggerConfetti }: NotesSectionProps) => {
       animate={{ opacity: 1, x: 0 }}
       className="space-y-6"
     >
-      <div className="flex items-center gap-3">
-        <ScrollText className="h-5 w-5 text-white" />
-        <h2 className="text-gradient text-xl font-semibold">Notes & Updates</h2>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <ScrollText className="h-5 w-5 text-white" />
+          <h2 className="text-gradient text-xl font-semibold">
+            Notes & Updates
+          </h2>
+        </div>
+        {notes && (
+          <Button
+            onClick={() => {
+              const currentNotes = notes;
+              clearNotes();
+              triggerConfetti("allTasksCleared");
+              toast({
+                title: "Notes cleared",
+                description:
+                  currentNotes.length > 100
+                    ? currentNotes.slice(0, 100) + "..."
+                    : currentNotes,
+                duration: 5000,
+                action: (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={undoNoteClear}
+                    className="border-white/10 bg-white/5 hover:bg-white/10"
+                  >
+                    Undo
+                  </Button>
+                ),
+              });
+            }}
+            size="icon"
+            className="bg-red-500/20 text-red-500 transition-colors hover:bg-red-500/30"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        )}
       </div>
 
       <div className="relative">

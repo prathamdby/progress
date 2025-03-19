@@ -8,6 +8,13 @@ import {
   type TeamMember,
 } from "@/lib/localStorage";
 
+type ClearAllTaskMarker = {
+  id: -1;
+  text: string;
+  done: boolean;
+  savedTasks: Task[];
+};
+
 interface Store {
   // Tasks
   tasks: Task[];
@@ -16,11 +23,15 @@ interface Store {
   removeTask: (id: number) => void;
   toggleTask: (id: number) => void;
   clearTasks: () => void;
+  undoTaskDelete: () => void;
+  lastDeletedTask: Task | ClearAllTaskMarker | null;
 
   // Notes
   notes: string;
   setNotes: (notes: string) => void;
   clearNotes: () => void;
+  undoNoteClear: () => void;
+  lastDeletedNote: string;
 
   // Team Members
   teamMembers: TeamMember[];
@@ -39,6 +50,8 @@ const defaultState = {
   notes: "",
   teamMembers: [],
   animalType: "cat" as AnimalType,
+  lastDeletedTask: null as Task | ClearAllTaskMarker | null,
+  lastDeletedNote: "",
 };
 
 export const useStore = create<Store>()(
@@ -60,9 +73,13 @@ export const useStore = create<Store>()(
       },
 
       removeTask: (id) => {
-        set((state) => ({
-          tasks: state.tasks.filter((task) => task.id !== id),
-        }));
+        set((state) => {
+          const taskToDelete = state.tasks.find((task) => task.id === id);
+          return {
+            tasks: state.tasks.filter((task) => task.id !== id),
+            lastDeletedTask: taskToDelete || null,
+          };
+        });
       },
 
       toggleTask: (id) => {
@@ -73,11 +90,53 @@ export const useStore = create<Store>()(
         }));
       },
 
-      clearTasks: () => set({ tasks: [] }),
+      clearTasks: () => {
+        set((state) => ({
+          tasks: [],
+          lastDeletedTask:
+            state.tasks.length > 0
+              ? {
+                  id: -1,
+                  text: "all tasks",
+                  done: false,
+                  savedTasks: state.tasks,
+                }
+              : null,
+        }));
+      },
+
+      undoTaskDelete: () => {
+        set((state) => {
+          if (!state.lastDeletedTask) return state;
+          if (state.lastDeletedTask.id === -1) {
+            // Special case for clearing all tasks
+            return {
+              ...state,
+              tasks: (state.lastDeletedTask as ClearAllTaskMarker).savedTasks,
+              lastDeletedTask: null,
+            };
+          }
+          return {
+            tasks: [...state.tasks, state.lastDeletedTask],
+            lastDeletedTask: null,
+          };
+        });
+      },
 
       // Notes
       setNotes: (notes) => set({ notes }),
-      clearNotes: () => set({ notes: "" }),
+      clearNotes: () => {
+        set((state) => ({
+          notes: "",
+          lastDeletedNote: state.notes,
+        }));
+      },
+      undoNoteClear: () => {
+        set((state) => ({
+          notes: state.lastDeletedNote,
+          lastDeletedNote: "",
+        }));
+      },
 
       // Team Members
       setTeamMembers: (members) => set({ teamMembers: members }),

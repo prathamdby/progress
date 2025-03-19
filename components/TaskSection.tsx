@@ -2,6 +2,7 @@
 
 import { useRef, useState, KeyboardEvent, ChangeEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
 import {
   Plus,
   X,
@@ -13,6 +14,7 @@ import {
   Maximize2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ToastAction } from "@/components/ui/toast";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -41,8 +43,16 @@ const TaskSection = ({
   isGenerating,
   isGifPlaying,
 }: TaskSectionProps) => {
-  const { tasks, addTask, removeTask, toggleTask, clearAllData, teamMembers } =
-    useStore();
+  const {
+    tasks,
+    addTask,
+    removeTask,
+    toggleTask,
+    clearTasks,
+    teamMembers,
+    undoTaskDelete,
+  } = useStore();
+  const { toast } = useToast();
   const [newTask, setNewTask] = useState("");
   const [taskMentionQuery, setTaskMentionQuery] = useState("");
   const [taskMentionSuggestions, setTaskMentionSuggestions] = useState<
@@ -99,8 +109,33 @@ const TaskSection = ({
   };
 
   const handleRemoveTask = (id: number) => {
+    const taskToDelete = tasks.find((t) => t.id === id);
     removeTask(id);
     triggerConfetti("taskDeleted");
+
+    let toastInstance: ReturnType<typeof toast>;
+    const toastAction = (
+      <ToastAction
+        altText="Undo task deletion"
+        className="border-white/10 bg-white/5 hover:bg-white/10"
+        onClick={() => {
+          undoTaskDelete();
+          toastInstance?.dismiss(true);
+        }}
+      >
+        Undo
+      </ToastAction>
+    );
+
+    toastInstance = toast({
+      title: "Task deleted",
+      description: taskToDelete?.text.length
+        ? taskToDelete.text.slice(0, 100) +
+          (taskToDelete.text.length > 100 ? "..." : "")
+        : "",
+      duration: 5000,
+      action: toastAction,
+    });
   };
 
   const handleToggleTask = (id: number) => {
@@ -111,9 +146,32 @@ const TaskSection = ({
     }
   };
 
-  const handleClearAllData = () => {
-    clearAllData();
-    triggerConfetti("allTasksCleared");
+  const handleClearTasks = () => {
+    if (tasks.length > 0) {
+      clearTasks();
+      triggerConfetti("allTasksCleared");
+
+      let toastInstance: ReturnType<typeof toast>;
+      const toastAction = (
+        <ToastAction
+          altText="Undo clear all tasks"
+          className="border-white/10 bg-white/5 hover:bg-white/10"
+          onClick={() => {
+            undoTaskDelete();
+            toastInstance?.dismiss(true);
+          }}
+        >
+          Undo
+        </ToastAction>
+      );
+
+      toastInstance = toast({
+        title: "All tasks cleared",
+        description: "All tasks have been removed",
+        duration: 5000,
+        action: toastAction,
+      });
+    }
   };
 
   return (
@@ -184,11 +242,11 @@ const TaskSection = ({
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
                   <AlertTriangle className="h-5 w-5 text-red-500" />
-                  <span>Clear All Data</span>
+                  <span>Clear All Tasks</span>
                 </DialogTitle>
                 <DialogDescription className="pt-3">
-                  Are you sure you want to clear all tasks and notes? This
-                  action cannot be undone.
+                  Are you sure you want to clear all tasks? You can undo this
+                  action.
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter className="mt-6">
@@ -202,7 +260,7 @@ const TaskSection = ({
                 </DialogClose>
                 <DialogClose asChild>
                   <Button
-                    onClick={handleClearAllData}
+                    onClick={handleClearTasks}
                     className="w-full bg-red-500/20 text-red-500 hover:bg-red-500/30 sm:w-auto"
                   >
                     Clear All

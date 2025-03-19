@@ -161,3 +161,18 @@
 .button-subtle {
   @apply bg-white/10 text-white transition-colors duration-200 hover:bg-white/20;
 }
+
+/* Toast Progress Bar Animation */
+@keyframes progress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+.toast-progress {
+  animation: progress 5000ms linear;
+  transform-origin: left;
+}

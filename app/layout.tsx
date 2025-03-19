@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Roboto } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
 const roboto = Roboto({
@@ -88,6 +89,7 @@ export default function RootLayout({
       >
         {children}
         <Analytics />
+        <Toaster />
       </body>
     </html>
   );

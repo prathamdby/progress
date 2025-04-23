@@ -1,0 +1,43 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Code Style Guide
+
+## TypeScript/JavaScript Conventions
+
+1. Use TypeScript for all new code
+2. Prefer `const` over `let`, avoid `var`
+3. Use arrow functions for consistency
+4. Implement proper error handling with try/catch blocks
+5. Use async/await over .then() chains
+
+## React Best Practices
+
+1. Use functional components with hooks
+2. Implement proper prop types using TypeScript interfaces
+3. Keep components focused and single-responsibility
+4. Use meaningful component and variable names
+5. Extract reusable logic into custom hooks
+
+## File Naming Conventions
+
+1. Use PascalCase for component files: `Button.tsx`
+2. Use kebab-case for utility files: `use-auth.ts`
+3. Use index.ts for barrel exports
+4. Group related components in subdirectories
+
+## Import/Export Guidelines
+
+1. Use named exports for utilities and components
+2. Group imports by type (React, components, utilities)
+3. Avoid default exports except for pages
+4. Use absolute imports with proper path aliases
+
+## Comments and Documentation
+
+1. Use JSDoc for component props and functions
+2. Keep comments focused and meaningful
+3. Document complex business logic
+4. Use TODO comments for future improvements

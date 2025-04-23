@@ -1,0 +1,37 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Project Structure Guidelines
+
+This document outlines the core structure and organization of our Next.js application.
+
+## Directory Structure
+
+- `app/`: Contains the main application code using Next.js 13+ App Router
+  - `components/`: Reusable React components
+  - `lib/`: Utility functions and shared logic
+  - `styles/`: Global styles and Tailwind configurations
+  - `(routes)/`: Page routes and layouts
+  
+## Key Files
+
+- `app/layout.tsx`: Root layout with metadata and global providers
+- `app/page.tsx`: Homepage component
+- `tailwind.config.js`: Tailwind CSS configuration
+- `next.config.js`: Next.js configuration
+
+## Component Guidelines
+
+1. Use the "use client" directive for any component using React hooks
+2. Follow atomic design principles for component organization
+3. Implement proper TypeScript types for all components
+4. Use shadcn/ui components for consistent UI elements
+
+## Styling Guidelines
+
+1. Use Tailwind CSS classes for styling
+2. Follow mobile-first responsive design
+3. Maintain consistent spacing using Tailwind's spacing scale
+4. Use CSS variables for theme colors and custom values

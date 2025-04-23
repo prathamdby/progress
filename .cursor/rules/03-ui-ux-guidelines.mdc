@@ -1,0 +1,44 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# UI/UX Guidelines
+
+## Design System
+
+1. Use shadcn/ui components as the foundation
+2. Implement consistent spacing using Tailwind's scale
+3. Follow the established color palette
+4. Maintain consistent typography hierarchy
+
+## Component Design
+
+1. Use Lucide React icons for consistency
+2. Implement proper loading states
+3. Handle error states gracefully
+4. Add hover and focus states for interactive elements
+5. Ensure proper contrast ratios for accessibility
+
+## Responsive Design
+
+1. Design mobile-first
+2. Use Tailwind's breakpoint system
+3. Ensure touch targets are appropriately sized
+4. Test layouts across different screen sizes
+
+## Accessibility
+
+1. Use semantic HTML elements
+2. Implement proper ARIA labels
+3. Ensure keyboard navigation works
+4. Maintain sufficient color contrast
+5. Support screen readers
+
+## Performance
+
+1. Optimize images using Next.js Image component
+2. Implement proper loading strategies
+3. Use code splitting where appropriate
+4. Minimize bundle size
+5. Follow Core Web Vitals guidelines

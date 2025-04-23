@@ -1,0 +1,46 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Accessibility Standards
+
+## Voice Input Accessibility
+
+1. Provide clear visual indicators for voice input status
+2. Include proper ARIA labels for voice controls
+3. Implement keyboard alternatives for voice features
+4. Show clear feedback for voice recognition status
+5. Handle errors with clear user feedback
+
+## General Accessibility
+
+1. Use semantic HTML elements
+2. Implement proper heading hierarchy
+3. Ensure sufficient color contrast
+4. Provide alt text for images
+5. Support keyboard navigation
+
+## ARIA Implementation
+
+1. Use appropriate ARIA roles
+2. Implement proper ARIA states
+3. Add descriptive ARIA labels
+4. Use ARIA live regions for dynamic content
+5. Follow WCAG guidelines
+
+## Focus Management
+
+1. Implement logical focus order
+2. Provide visible focus indicators
+3. Handle focus trapping in modals
+4. Manage focus after dynamic updates
+5. Support skip links
+
+## Input Methods
+
+1. Support multiple input methods
+2. Implement proper touch targets
+3. Handle different input devices
+4. Provide alternative text input methods
+5. Support screen readers properly

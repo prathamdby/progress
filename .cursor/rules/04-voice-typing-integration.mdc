@@ -1,0 +1,45 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Voice Typing Integration Guidelines
+
+## Speech Recognition Setup
+
+1. The project uses `react-speech-recognition` for voice input functionality
+2. Voice typing features are encapsulated in custom hooks
+3. All voice-related components must use "use client" directive
+4. Implement proper cleanup for speech recognition listeners
+
+## Implementation Guidelines
+
+1. Always check browser compatibility before initializing
+2. Handle mounting/unmounting states properly
+3. Implement error states for unsupported browsers
+4. Use proper TypeScript types for speech recognition
+5. Clean up listeners in useEffect cleanup functions
+
+## Voice Typing Hook Usage
+
+1. Import from `useVoiceTyping.ts` custom hook
+2. Handle both listening and non-listening states
+3. Implement proper error handling
+4. Use appropriate loading states while processing
+5. Follow accessibility guidelines for voice input
+
+## State Management
+
+1. Prevent state updates after component unmounting
+2. Handle hydration properly in SSR context
+3. Implement proper cleanup in useEffect
+4. Use appropriate React state management
+5. Handle browser compatibility checks
+
+## Error Handling
+
+1. Provide clear feedback for unsupported browsers
+2. Handle permission denials gracefully
+3. Implement fallback mechanisms
+4. Show appropriate error messages to users
+5. Log errors for debugging purposes

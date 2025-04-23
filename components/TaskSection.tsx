@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState, KeyboardEvent, ChangeEvent } from "react";
+import { useRef, useState } from "react";
+import type { KeyboardEvent, ChangeEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 import {

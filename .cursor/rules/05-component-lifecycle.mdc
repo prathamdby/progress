@@ -1,0 +1,47 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Component Lifecycle Management
+
+## Server vs Client Components
+
+1. Use "use client" directive for components with:
+   - React hooks (useState, useEffect, etc.)
+   - Browser APIs
+   - Client-side event handlers
+2. Keep server components where possible for better performance
+3. Properly handle hydration in client components
+
+## State Management
+
+1. Initialize state appropriately for SSR
+2. Prevent state updates on unmounted components
+3. Use proper cleanup in useEffect hooks
+4. Handle async operations safely
+5. Implement proper loading states
+
+## Mounting and Unmounting
+
+1. Clean up resources in useEffect return function
+2. Handle event listeners properly
+3. Cancel pending operations on unmount
+4. Clear intervals and timeouts
+5. Remove event listeners
+
+## Error Boundaries
+
+1. Implement error boundaries for critical components
+2. Handle component errors gracefully
+3. Provide meaningful error messages
+4. Log errors appropriately
+5. Implement fallback UI
+
+## Performance Optimization
+
+1. Use React.memo where appropriate
+2. Implement proper dependency arrays in hooks
+3. Avoid unnecessary re-renders
+4. Optimize event handlers
+5. Use proper key props in lists

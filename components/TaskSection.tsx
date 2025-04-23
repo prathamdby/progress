@@ -59,7 +59,6 @@ const TaskSection = ({
 	const { toast } = useToast();
 	const [newTask, setNewTask] = useState("");
 	const [interimResult, setInterimResult] = useState("");
-	const [taskMentionQuery, setTaskMentionQuery] = useState("");
 	const [taskMentionSuggestions, setTaskMentionSuggestions] = useState<
 		string[]
 	>([]);
@@ -71,7 +70,6 @@ const TaskSection = ({
 		addCurrentTranscript,
 		isSupported,
 		hasPermission,
-		currentText,
 	} = useVoiceTyping({
 		onInterimResult: (text) => {
 			setInterimResult(text);
@@ -98,7 +96,6 @@ const TaskSection = ({
 		const lastWord = words[words.length - 1];
 		if (lastWord.startsWith("@")) {
 			const query = lastWord.slice(1);
-			setTaskMentionQuery(query);
 			setTaskMentionSuggestions(
 				teamMembers
 					.map((member) => member.username)
